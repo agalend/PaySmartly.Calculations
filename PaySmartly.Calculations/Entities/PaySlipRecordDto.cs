@@ -2,9 +2,7 @@ namespace PaySmartly.Calculations.Entities
 {
     public record class PaySlipRecordDto(
             string Id,
-            string IRD,
-            string FirstName,
-            string LastName,
+            EmployeeIdentity Employee,
             double AnnualSalary,
             double SuperRate,
             string PayPeriod,
@@ -13,5 +11,5 @@ namespace PaySmartly.Calculations.Entities
             ResultWithFormula<double> NetIncome,
             ResultWithFormula<double> Super,
             DateTime TransactionTime,
-            string Requester);
+            RequesterIdentity Requester);
 }
