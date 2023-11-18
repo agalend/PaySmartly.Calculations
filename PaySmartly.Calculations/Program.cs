@@ -1,4 +1,3 @@
-
 using PaySmartly.Calculations;
 
 App app = new();
