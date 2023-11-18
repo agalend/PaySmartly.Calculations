@@ -5,6 +5,8 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaySmartly.Calculations", "PaySmartly.Calculations\PaySmartly.Calculations.csproj", "{0CF54857-E67C-4878-B114-6E02DDC45EB8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaySmartly.Calculations.Tests", "PaySmartly.Calculations.Tests\PaySmartly.Calculations.Tests.csproj", "{CD1116B0-4176-469B-866B-1D1B223EB081}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{0CF54857-E67C-4878-B114-6E02DDC45EB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0CF54857-E67C-4878-B114-6E02DDC45EB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0CF54857-E67C-4878-B114-6E02DDC45EB8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD1116B0-4176-469B-866B-1D1B223EB081}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD1116B0-4176-469B-866B-1D1B223EB081}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD1116B0-4176-469B-866B-1D1B223EB081}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD1116B0-4176-469B-866B-1D1B223EB081}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
