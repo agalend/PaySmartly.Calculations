@@ -17,6 +17,8 @@ namespace PaySmartly.Calculations
         ILegislationService legislationService,
         IPaySlipCalculator paySlipCalculator) : IPaySlipManager
     {
+        private readonly ServiceIdentity IDENTITY = new("1.0.0.0");
+
         private readonly IPaySlipPersistance persistance = persistance;
         private readonly ILegislationService legislationService = legislationService;
         private readonly IPaySlipCalculator paySlipCalculator = paySlipCalculator;

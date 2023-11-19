@@ -6,6 +6,7 @@ namespace PaySmartly.Calculations.Legislation
     public class InMemoryLegislationService : ILegislationService
     {
         private readonly TaxableIncomeTable taxableIncomeTable;
+        private readonly ServiceIdentity ServiceIdentity = new("1.0.0.0");
 
         public InMemoryLegislationService()
         {

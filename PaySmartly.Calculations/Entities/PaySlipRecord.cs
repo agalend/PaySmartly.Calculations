@@ -12,5 +12,7 @@ namespace PaySmartly.Calculations.Entities
             ResultWithFormula<double> NetIncome,
             ResultWithFormula<double> Super,
             DateTime TransactionTime,
-            PaySlipMetadata Metadata);
+            ServiceIdentity CalculationsService,
+            ServiceIdentity LegislationService,
+            RequesterIdentity Requester);
 }
