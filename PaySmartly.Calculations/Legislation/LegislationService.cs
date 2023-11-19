@@ -4,15 +4,16 @@ namespace PaySmartly.Calculations.Legislation
 {
     public interface ILegislationService
     {
-        string Identity { get; }
-
         Task<TaxableIncomeTable> GetTaxableIncomeTable();
         Task<bool> IsValidIRD(IRD ird);
     }
 
     public class LegislationService : ILegislationService
     {
-        public string Identity => "version 1";
+        public Task<LegislationServiceIdentity> GetIdentity()
+        {
+            throw new NotImplementedException();
+        }
 
         public Task<TaxableIncomeTable> GetTaxableIncomeTable()
         {

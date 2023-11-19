@@ -5,78 +5,67 @@ using PaySmartly.Calculations.Persistance;
 
 namespace PaySmartly.Calculations
 {
-    // TODO: add limit and pagination !!!
     public interface IPaySlipManager
     {
-        Task<PaySlipRecordDto> CreatePaySlip(PaySlip paySlip);
-        Task<PaySlipRecordDto> GetPaySlip(string id);
-        Task<PaySlipRecordDto> DeletePaySlip(string id);
-        Task<IReadOnlyCollection<PaySlipRecordDto>> GetAllPaySlipsByDate(DateTime from, DateTime To);
-        Task<IReadOnlyCollection<PaySlipRecordDto>> GetAllPaySlipsByName(string name);
-        Task<IReadOnlyCollection<PaySlipRecordDto>> GetAllPaySlipsByIRD(IRD ird);
+        Task<PaySlipRecordDto> CreatePaySlip(PaySlipRequest paySlip);
+        Task<PaySlipRecordDto?> GetPaySlip(string id);
+        Task<PaySlipRecordDto?> DeletePaySlip(string id);
     }
 
     public class PaySlipManager(
         IPaySlipPersistance persistance,
         ILegislationService legislationService,
-        IFormulas formulas) : IPaySlipManager
+        IPaySlipCalculator paySlipCalculator) : IPaySlipManager
     {
         private readonly IPaySlipPersistance persistance = persistance;
         private readonly ILegislationService legislationService = legislationService;
-        private readonly IFormulas formulas = formulas;
+        private readonly IPaySlipCalculator paySlipCalculator = paySlipCalculator;
 
-        public async Task<PaySlipRecordDto> CreatePaySlip(PaySlip paySlip)
+        public async Task<PaySlipRecordDto> CreatePaySlip(PaySlipRequest paySlipRequest)
         {
             TaxableIncomeTable table = await legislationService.GetTaxableIncomeTable();
 
-            PaySlipRecord record = CreatePaySlipRecord(paySlip, table);
+            PaySlip calculatedPaySlip = paySlipCalculator.Calculate(paySlipRequest, table);
 
-            PaySlipRecord addedRecord = await persistance.AddPaySlip(record);
+            PaySlipRecord paySlipRecord = ConvertToPlaySlipRecord(calculatedPaySlip);
 
-            PaySlipRecordDto recordDto = ConvertPlaySlipRecord(addedRecord);
+            PaySlipRecord addedPaySlipRecord = await persistance.AddPaySlipRecord(paySlipRecord);
 
-            return recordDto;
+            PaySlipRecordDto? paySlipDto = ConvertToPlaySlipRecordDto(addedPaySlipRecord);
+
+            return paySlipDto;
         }
 
-        public async Task<PaySlipRecordDto> DeletePaySlip(string id)
+        public async Task<PaySlipRecordDto?> GetPaySlip(string id)
         {
-            PaySlipRecord addedRecord = await persistance.DeletePaySlip(id);
+            PaySlipRecord? addedRecord = await persistance.GetPaySlipRecord(id);
 
-            PaySlipRecordDto recordDto = ConvertPlaySlipRecord(addedRecord);
+            PaySlipRecordDto? paySlipDto = addedRecord == null
+                ? default
+                : ConvertToPlaySlipRecordDto(addedRecord);
 
-            return recordDto;
+            return paySlipDto;
         }
 
-        public async Task<PaySlipRecordDto> GetPaySlip(string id)
+        public async Task<PaySlipRecordDto?> DeletePaySlip(string id)
         {
-            PaySlipRecord addedRecord = await persistance.GetPaySlip(id);
+            PaySlipRecord? deletedPaySlipRecord = await persistance.DeletePaySlipRecord(id);
 
-            PaySlipRecordDto recordDto = ConvertPlaySlipRecord(addedRecord);
+            PaySlipRecordDto? paySlipDto = deletedPaySlipRecord == null
+                ? default
+                : ConvertToPlaySlipRecordDto(deletedPaySlipRecord);
 
-            return recordDto;
+            return paySlipDto;
         }
 
-        public async Task<IReadOnlyCollection<PaySlipRecordDto>> GetAllPaySlipsByDate(DateTime from, DateTime To)
-        {
-            throw new NotImplementedException();
-        }
+        // TODO: create PaySlipConverter and remove below methods from this class
 
-        public async Task<IReadOnlyCollection<PaySlipRecordDto>> GetAllPaySlipsByIRD(IRD ird)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<IReadOnlyCollection<PaySlipRecordDto>> GetAllPaySlipsByName(string name)
+        private PaySlipRecord ConvertToPlaySlipRecord(PaySlip record)
         {
             throw new NotImplementedException();
         }
 
-        private PaySlipRecord CreatePaySlipRecord(PaySlip paySlip, TaxableIncomeTable table)
-        {
-            throw new NotImplementedException();
-        }
-
-        private PaySlipRecordDto ConvertPlaySlipRecord(PaySlipRecord record)
+        private PaySlipRecordDto ConvertToPlaySlipRecordDto(PaySlipRecord record)
         {
             throw new NotImplementedException();
         }

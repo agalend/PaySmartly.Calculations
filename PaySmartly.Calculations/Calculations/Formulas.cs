@@ -14,8 +14,11 @@ namespace PaySmartly.Calculations.Calculations
     {
         public ResultWithFormula<double> CalculateGrossIncome(double annualSalary, double months)
         {
-            // AnnualSalary / 12, double check in pdf
-            throw new NotImplementedException();
+            double grossIncome = annualSalary / months;
+
+            string formula = $"{nameof(grossIncome)} = {nameof(annualSalary)} / {nameof(months)}";
+
+            return new(grossIncome, formula);
         }
 
         public ResultWithFormula<double> CalculateIncomeTax(double annualSalary, TaxableIncomeTable table)
@@ -26,14 +29,20 @@ namespace PaySmartly.Calculations.Calculations
 
         public ResultWithFormula<double> CalculateNetIncome(double grossIncome, double incomeTax)
         {
-            // GrossIncome - IncomeTax, double check in pdf
-            throw new NotImplementedException();
+            double netIncome = grossIncome - incomeTax;
+
+            string formula = $"{nameof(netIncome)} = {nameof(grossIncome)} - {nameof(incomeTax)}";
+
+            return new(netIncome, formula);
         }
 
         public ResultWithFormula<double> CalculateSuper(double grossIncome, double superRate)
         {
-            // GrossIncome * SuperRate, double check in pdf
-            throw new NotImplementedException();
+            double super = grossIncome * superRate;
+
+            string formula = $"{nameof(super)} = {nameof(grossIncome)} * {nameof(superRate)}";
+
+            return new(super, formula);
         }
     }
 }
