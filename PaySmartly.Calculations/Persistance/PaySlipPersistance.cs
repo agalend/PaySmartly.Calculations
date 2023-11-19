@@ -2,6 +2,7 @@ using PaySmartly.Calculations.Entities;
 
 namespace PaySmartly.Calculations.Persistance
 {
+    // TODO: use ServiceResult !!!
     public interface IPaySlipPersistance
     {
         Task<PaySlipRecord> AddPaySlipRecord(PaySlipRecord paySlip);

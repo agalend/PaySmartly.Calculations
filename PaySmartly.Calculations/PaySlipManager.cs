@@ -25,9 +25,10 @@ namespace PaySmartly.Calculations
 
         public async Task<PaySlipRecordDto> CreatePaySlip(PaySlipRequest paySlipRequest)
         {
-            TaxableIncomeTable table = await legislationService.GetTaxableIncomeTable();
+            //TODO: do not use table.Result here, do it clearer
+            ServiceResult<TaxableIncomeTable> table = await legislationService.GetTaxableIncomeTable();
 
-            PaySlip calculatedPaySlip = paySlipCalculator.Calculate(paySlipRequest, table);
+            PaySlip calculatedPaySlip = paySlipCalculator.Calculate(paySlipRequest, table.Result);
 
             PaySlipRecord paySlipRecord = ConvertToPlaySlipRecord(calculatedPaySlip);
 

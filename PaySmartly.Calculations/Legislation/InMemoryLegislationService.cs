@@ -20,8 +20,12 @@ namespace PaySmartly.Calculations.Legislation
             taxableIncomeTable = new(readOnlyRanges);
         }
 
-        public Task<TaxableIncomeTable> GetTaxableIncomeTable() => Task.FromResult(taxableIncomeTable);
+        public Task<ServiceResult<TaxableIncomeTable>> GetTaxableIncomeTable()
+        {
+            ServiceResult<TaxableIncomeTable> result = new(taxableIncomeTable, ServiceIdentity);
+            return Task.FromResult(result);
+        }
 
-        public Task<bool> IsValidIRD(IRD ird) => Task.FromException<bool>(new NotImplementedException());
+        public Task<ServiceResult<bool>> IsValidIRD(IRD ird) => Task.FromException<ServiceResult<bool>>(new NotImplementedException());
     }
 }
