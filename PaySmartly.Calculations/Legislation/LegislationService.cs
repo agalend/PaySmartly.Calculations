@@ -10,7 +10,7 @@ namespace PaySmartly.Calculations.Legislation
 
     public class LegislationService : ILegislationService
     {
-        public Task<LegislationServiceIdentity> GetIdentity()
+        public Task<ServiceIdentity> GetIdentity()
         {
             throw new NotImplementedException();
         }
