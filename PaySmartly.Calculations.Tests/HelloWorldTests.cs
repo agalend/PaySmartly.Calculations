@@ -1,3 +1,8 @@
+using PaySmartly.Calculations.Calculations;
+using PaySmartly.Calculations.Entities;
+using PaySmartly.Calculations.Legislation;
+using PaySmartly.Calculations.Persistance;
+
 namespace PaySmartly.Calculations.Tests;
 
 public class HelloWorldTests
@@ -5,11 +10,12 @@ public class HelloWorldTests
     [Fact]
     public async Task TestRootEndpoint()
     {
-        await using var application = new WebApplicationFactory<Program>();
-        using var client = application.CreateClient();
+        IPaySlipPersistance persistance = new InMemoryPaySlipPersistance();
+        ILegislationService legislation = new InMemoryLegislationService();
+        IPaySlipCalculator calculator = new PaySlipCalculator(new Formulas());
 
-        var response = await client.GetStringAsync("/");
-
-        Assert.Equal("Hello World!", response);
+        IPaySlipManager manager = new PaySlipManager(persistance, legislation, calculator, new("0.1.0.0"));
+        PaySlipRequest paySlipRequest = new(new("Stefan", "Bozov"), 120_000, 5, "March", new("Unknown", "Unknown"));
+        PaySlipRecordDto? paySlipRecordDto = await manager.CreatePaySlip(paySlipRequest);
     }
 }

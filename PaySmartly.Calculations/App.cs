@@ -4,7 +4,8 @@ namespace PaySmartly.Calculations
     {
         public void Run(string[] args)
         {
-            var builder = WebApplication.CreateBuilder(args);
+            // will use CreateSlimBuilder in order to be prepared for an AOT compilation
+            var builder = WebApplication.CreateSlimBuilder(args);
             var app = builder.Build();
 
             app.MapGet("/", () => "Hello World!");

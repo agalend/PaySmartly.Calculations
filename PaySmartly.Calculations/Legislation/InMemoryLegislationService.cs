@@ -6,7 +6,6 @@ namespace PaySmartly.Calculations.Legislation
     public class InMemoryLegislationService : ILegislationService
     {
         private readonly TaxableIncomeTable taxableIncomeTable;
-        private readonly ServiceIdentity ServiceIdentity = new("1.0.0.0");
 
         public InMemoryLegislationService()
         {
@@ -20,9 +19,11 @@ namespace PaySmartly.Calculations.Legislation
             taxableIncomeTable = new(readOnlyRanges);
         }
 
-        public Task<ServiceResult<TaxableIncomeTable>> GetTaxableIncomeTable()
+        public ServiceIdentity Identity { get; } = new("0.1.0.0");
+
+        public Task<ServiceResult<TaxableIncomeTable>> GetTaxableIncomeTable(string month)
         {
-            ServiceResult<TaxableIncomeTable> result = new(taxableIncomeTable, ServiceIdentity);
+            ServiceResult<TaxableIncomeTable> result = new(taxableIncomeTable, Identity);
             return Task.FromResult(result);
         }
 

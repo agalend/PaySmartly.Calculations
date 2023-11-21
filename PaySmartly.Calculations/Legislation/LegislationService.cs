@@ -4,15 +4,14 @@ namespace PaySmartly.Calculations.Legislation
 {
     public interface ILegislationService
     {
-        // TODO: return service identity with each and every call
-        Task<ServiceResult<TaxableIncomeTable>> GetTaxableIncomeTable();
+        Task<ServiceResult<TaxableIncomeTable>> GetTaxableIncomeTable(string month);
         Task<ServiceResult<bool>> IsValidIRD(IRD ird);
     }
 
     public class LegislationService : ILegislationService
     {
 
-        public Task<ServiceResult<TaxableIncomeTable>> GetTaxableIncomeTable()
+        public Task<ServiceResult<TaxableIncomeTable>> GetTaxableIncomeTable(string month)
         {
             throw new NotImplementedException();
         }

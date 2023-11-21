@@ -3,74 +3,75 @@ using PaySmartly.Calculations.Entities;
 using PaySmartly.Calculations.Legislation;
 using PaySmartly.Calculations.Persistance;
 
+using static PaySmartly.Calculations.Helpers.PaySlipConverter;
+
 namespace PaySmartly.Calculations
 {
     public interface IPaySlipManager
     {
-        Task<PaySlipRecordDto> CreatePaySlip(PaySlipRequest paySlip);
+        Task<PaySlipRecordDto?> CreatePaySlip(PaySlipRequest paySlipRequest);
         Task<PaySlipRecordDto?> GetPaySlip(string id);
         Task<PaySlipRecordDto?> DeletePaySlip(string id);
     }
 
     public class PaySlipManager(
         IPaySlipPersistance persistance,
-        ILegislationService legislationService,
-        IPaySlipCalculator paySlipCalculator) : IPaySlipManager
+        ILegislationService legislation,
+        IPaySlipCalculator calculator,
+        ServiceIdentity myIdentity) : IPaySlipManager
     {
-        private readonly ServiceIdentity IDENTITY = new("1.0.0.0");
-
         private readonly IPaySlipPersistance persistance = persistance;
-        private readonly ILegislationService legislationService = legislationService;
-        private readonly IPaySlipCalculator paySlipCalculator = paySlipCalculator;
+        private readonly ILegislationService legislation = legislation;
+        private readonly IPaySlipCalculator calculator = calculator;
+        private readonly ServiceIdentity myIdentity = myIdentity;
 
-        public async Task<PaySlipRecordDto> CreatePaySlip(PaySlipRequest paySlipRequest)
+        public async Task<PaySlipRecordDto?> CreatePaySlip(PaySlipRequest paySlipRequest)
         {
-            //TODO: do not use table.Result here, do it clearer
-            ServiceResult<TaxableIncomeTable> table = await legislationService.GetTaxableIncomeTable();
+            PaySlipCreateRecordRequest createRecordRequest = await CalculatePaySlip(paySlipRequest);
 
-            PaySlip calculatedPaySlip = paySlipCalculator.Calculate(paySlipRequest, table.Result);
+            ServiceResult<PaySlipCreateRecordResponse> persistanceServiceResult = await persistance.CreatePaySlipRecord(createRecordRequest);
+            PaySlipRecord? paySlipRecord = persistanceServiceResult.Value.PaySlipRecord;
 
-            PaySlipRecord paySlipRecord = ConvertToPlaySlipRecord(calculatedPaySlip);
-
-            PaySlipRecord addedPaySlipRecord = await persistance.AddPaySlipRecord(paySlipRecord);
-
-            PaySlipRecordDto? paySlipDto = ConvertToPlaySlipRecordDto(addedPaySlipRecord);
+            PaySlipRecordDto? paySlipDto = paySlipRecord == null
+                ? default
+                : ConvertToPlaySlipRecordDto(paySlipRecord);
 
             return paySlipDto;
         }
 
         public async Task<PaySlipRecordDto?> GetPaySlip(string id)
         {
-            PaySlipRecord? addedRecord = await persistance.GetPaySlipRecord(id);
+            ServiceResult<PaySlipCreateRecordResponse> result = await persistance.GetPaySlipRecord(id);
+            PaySlipRecord? record = result.Value.PaySlipRecord;
 
-            PaySlipRecordDto? paySlipDto = addedRecord == null
+            PaySlipRecordDto? paySlipDto = record == null
                 ? default
-                : ConvertToPlaySlipRecordDto(addedRecord);
+                : ConvertToPlaySlipRecordDto(record);
 
             return paySlipDto;
         }
 
         public async Task<PaySlipRecordDto?> DeletePaySlip(string id)
         {
-            PaySlipRecord? deletedPaySlipRecord = await persistance.DeletePaySlipRecord(id);
+            ServiceResult<PaySlipCreateRecordResponse> result = await persistance.DeletePaySlipRecord(id);
+            PaySlipRecord? record = result.Value.PaySlipRecord;
 
-            PaySlipRecordDto? paySlipDto = deletedPaySlipRecord == null
+            PaySlipRecordDto? paySlipDto = record == null
                 ? default
-                : ConvertToPlaySlipRecordDto(deletedPaySlipRecord);
+                : ConvertToPlaySlipRecordDto(record);
 
             return paySlipDto;
         }
 
-        // TODO: create PaySlipConverter and remove below methods from this class
-
-        private PaySlipRecord ConvertToPlaySlipRecord(PaySlip record)
+        private async Task<PaySlipCreateRecordRequest> CalculatePaySlip(PaySlipRequest paySlipRequest)
         {
-            throw new NotImplementedException();
-        }
+            ServiceResult<TaxableIncomeTable> legislationResult = await legislation.GetTaxableIncomeTable(paySlipRequest.PayPeriod);
+            ServiceIdentity legislationIdentity = legislationResult.ServiceIdentity;
+            TaxableIncomeTable taxableIncomeTable = legislationResult.Value;
 
-        private PaySlipRecordDto ConvertToPlaySlipRecordDto(PaySlipRecord record)
-        {
-            throw new NotImplementedException();
+            CalculatedPaySlip calculated = calculator.Calculate(paySlipRequest, taxableIncomeTable);
+            PaySlipCreateRecordRequest request = ConvertToPlaySlipCreateRecordRequest(calculated, legislationIdentity, myIdentity);
+            return request;
         }
     }
 }

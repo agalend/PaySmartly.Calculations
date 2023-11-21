@@ -8,28 +8,41 @@ namespace PaySmartly.Calculations.Persistance
         private int currentId = -1;
         private readonly ConcurrentDictionary<string, PaySlipRecord> paySlipRecords = new();
 
-        public Task<PaySlipRecord> AddPaySlipRecord(PaySlipRecord paySlip)
+        public Task<ServiceResult<PaySlipCreateRecordResponse>> CreatePaySlipRecord(PaySlipCreateRecordRequest request)
         {
             string id = GenerateNextId(ref currentId);
+            PaySlipRecord record = new(id, Identity, request);
 
-            // we are not going to update any dictionary record, and therefore, below line should be reliable enough 
-            PaySlipRecord record = paySlipRecords.AddOrUpdate(id, paySlip, (key, old) => paySlip);
+            PaySlipRecord addedRecord = paySlipRecords.AddOrUpdate(id, record, (key, old) => record);
 
-            return Task.FromResult(record);
+            PaySlipCreateRecordResponse response = new(addedRecord);
+            ServiceResult<PaySlipCreateRecordResponse> result = new(response, Identity);
+
+            return Task.FromResult(result);
         }
 
-        public Task<PaySlipRecord?> GetPaySlipRecord(string id)
-        {
-            paySlipRecords.TryGetValue(id, out PaySlipRecord? paySlipRecord);
+        public ServiceIdentity Identity { get; } = new("0.1.0.0");
 
-            return Task.FromResult(paySlipRecord);
+        public Task<ServiceResult<PaySlipCreateRecordResponse>> GetPaySlipRecord(string id)
+        {
+            paySlipRecords.TryGetValue(id, out PaySlipRecord? record);
+
+            PaySlipCreateRecordResponse response = record == null ? new(default) : new(record);
+
+            ServiceResult<PaySlipCreateRecordResponse> result = new(response, Identity);
+
+            return Task.FromResult(result);
         }
 
-        public Task<PaySlipRecord?> DeletePaySlipRecord(string id)
+        public Task<ServiceResult<PaySlipCreateRecordResponse>> DeletePaySlipRecord(string id)
         {
-            paySlipRecords.Remove(id, out PaySlipRecord? paySlipRecord);
+            paySlipRecords.Remove(id, out PaySlipRecord? record);
 
-            return Task.FromResult(paySlipRecord);
+            PaySlipCreateRecordResponse response = record == null ? new(default) : new(record);
+
+            ServiceResult<PaySlipCreateRecordResponse> result = new(response, Identity);
+
+            return Task.FromResult(result);
         }
 
         private static string GenerateNextId(ref int previousId)

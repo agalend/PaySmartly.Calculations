@@ -10,6 +10,5 @@ namespace PaySmartly.Calculations.Entities
             ResultWithFormula<double> IncomeTax,
             ResultWithFormula<double> NetIncome,
             ResultWithFormula<double> Super,
-            DateTime TransactionTime,
             RequesterIdentity Requester);
 }

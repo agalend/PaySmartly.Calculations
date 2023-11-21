@@ -2,27 +2,26 @@ using PaySmartly.Calculations.Entities;
 
 namespace PaySmartly.Calculations.Persistance
 {
-    // TODO: use ServiceResult !!!
     public interface IPaySlipPersistance
     {
-        Task<PaySlipRecord> AddPaySlipRecord(PaySlipRecord paySlip);
-        Task<PaySlipRecord?> GetPaySlipRecord(string id);
-        Task<PaySlipRecord?> DeletePaySlipRecord(string id);
+        Task<ServiceResult<PaySlipCreateRecordResponse>> CreatePaySlipRecord(PaySlipCreateRecordRequest createRecordRequest);
+        Task<ServiceResult<PaySlipCreateRecordResponse>> GetPaySlipRecord(string id);
+        Task<ServiceResult<PaySlipCreateRecordResponse>> DeletePaySlipRecord(string id);
     }
 
     public class PaySlipPersistance : IPaySlipPersistance
     {
-        public Task<PaySlipRecord> AddPaySlipRecord(PaySlipRecord paySlip)
+        public Task<ServiceResult<PaySlipCreateRecordResponse>> CreatePaySlipRecord(PaySlipCreateRecordRequest createRecordRequest)
         {
             throw new NotImplementedException();
         }
 
-        public Task<PaySlipRecord?> DeletePaySlipRecord(string id)
+        public Task<ServiceResult<PaySlipCreateRecordResponse>> DeletePaySlipRecord(string id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<PaySlipRecord?> GetPaySlipRecord(string id)
+        public Task<ServiceResult<PaySlipCreateRecordResponse>> GetPaySlipRecord(string id)
         {
             throw new NotImplementedException();
         }
