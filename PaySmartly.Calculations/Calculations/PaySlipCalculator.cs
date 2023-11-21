@@ -14,7 +14,13 @@ namespace PaySmartly.Calculations.Calculations
 
         public CalculatedPaySlip Calculate(PaySlipRequest paySlipRequest, TaxableIncomeTable taxableIncomeTable)
         {
-            throw new NotImplementedException();
+            double grossIncome = formulas.CalculateGrossIncome(paySlipRequest.AnnualSalary, months: 12);
+            double incomeTax = formulas.CalculateIncomeTax(paySlipRequest.AnnualSalary, taxableIncomeTable, months: 12);
+            double netIncome = formulas.CalculateNetIncome(grossIncome, incomeTax);
+            double super = formulas.CalculateSuper(grossIncome, paySlipRequest.SuperRate);
+
+            CalculatedPaySlip calculatedPaySlip = new(paySlipRequest, grossIncome, incomeTax, netIncome, super);
+            return calculatedPaySlip;
         }
     }
 }

@@ -1,48 +1,65 @@
+using System.Text;
 using PaySmartly.Calculations.Entities;
+using System.Linq;
 
 namespace PaySmartly.Calculations.Calculations
 {
     public interface IFormulas
     {
-        ResultWithFormula<double> CalculateGrossIncome(double annualSalary, double months);
-        ResultWithFormula<double> CalculateIncomeTax(double annualSalary, TaxableIncomeTable table);
-        ResultWithFormula<double> CalculateNetIncome(double grossIncome, double incomeTax);
-        ResultWithFormula<double> CalculateSuper(double grossIncome, double superRate);
+        double CalculateGrossIncome(double annualSalary, double months);
+        double CalculateIncomeTax(double annualSalary, TaxableIncomeTable table, double months);
+        double CalculateNetIncome(double grossIncome, double incomeTax);
+        double CalculateSuper(double grossIncome, double superRate);
     }
 
     public class Formulas : IFormulas
     {
-        public ResultWithFormula<double> CalculateGrossIncome(double annualSalary, double months)
+        public double CalculateGrossIncome(double annualSalary, double months)
         {
             double grossIncome = annualSalary / months;
 
-            string formula = $"{nameof(grossIncome)} = {nameof(annualSalary)} / {nameof(months)}";
-
-            return new(grossIncome, formula);
+            return Math.Round(grossIncome, 2);
         }
 
-        public ResultWithFormula<double> CalculateIncomeTax(double annualSalary, TaxableIncomeTable table)
+        public double CalculateIncomeTax(double annualSalary, TaxableIncomeTable table, double months)
         {
-            // based on TaxableIncome, see pdf and online
-            throw new NotImplementedException();
+            StringBuilder stringBuilder = new();
+            TaxableRange[] ranges = [.. table.Ranges];
+
+            double incomeTax = 0d;
+
+            for (int i = 0; i < ranges.Length; i++)
+            {
+                TaxableRange range = ranges[i];
+
+                bool isInTheRange = range.Start <= annualSalary && annualSalary <= range.End;
+                if (!isInTheRange)
+                {
+                    incomeTax += Math.Round((range.End - range.Start) * range.Tax);
+                }
+                else
+                {
+                    incomeTax += Math.Round((annualSalary - range.Start) * range.Tax);
+                    incomeTax /= months;
+                    break;
+                }
+            }
+
+            return Math.Round(incomeTax, 2);
         }
 
-        public ResultWithFormula<double> CalculateNetIncome(double grossIncome, double incomeTax)
+        public double CalculateNetIncome(double grossIncome, double incomeTax)
         {
             double netIncome = grossIncome - incomeTax;
 
-            string formula = $"{nameof(netIncome)} = {nameof(grossIncome)} - {nameof(incomeTax)}";
-
-            return new(netIncome, formula);
+            return Math.Round(netIncome, 2);
         }
 
-        public ResultWithFormula<double> CalculateSuper(double grossIncome, double superRate)
+        public double CalculateSuper(double grossIncome, double superRate)
         {
-            double super = grossIncome * superRate;
+            double super = (superRate / 100) * grossIncome;
 
-            string formula = $"{nameof(super)} = {nameof(grossIncome)} * {nameof(superRate)}";
-
-            return new(super, formula);
+            return Math.Round(super, 2);
         }
     }
 }

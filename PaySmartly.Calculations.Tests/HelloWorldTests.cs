@@ -15,7 +15,7 @@ public class HelloWorldTests
         IPaySlipCalculator calculator = new PaySlipCalculator(new Formulas());
 
         IPaySlipManager manager = new PaySlipManager(persistance, legislation, calculator, new("0.1.0.0"));
-        PaySlipRequest paySlipRequest = new(new("Stefan", "Bozov"), 120_000, 5, "March", new("Unknown", "Unknown"));
+        PaySlipRequest paySlipRequest = new(new("Stefan", "Bozov"), 60_050, 9, "March", new("Unknown", "Unknown"));
         PaySlipRecordDto? paySlipRecordDto = await manager.CreatePaySlip(paySlipRequest);
     }
 }

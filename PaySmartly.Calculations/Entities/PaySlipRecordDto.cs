@@ -6,9 +6,9 @@ namespace PaySmartly.Calculations.Entities
             double AnnualSalary,
             double SuperRate,
             string PayPeriod,
-            ResultWithFormula<double> GrossIncome,
-            ResultWithFormula<double> IncomeTax,
-            ResultWithFormula<double> NetIncome,
-            ResultWithFormula<double> Super,
+            double GrossIncome,
+            double IncomeTax,
+            double NetIncome,
+            double Super,
             RequesterIdentity Requester);
 }
