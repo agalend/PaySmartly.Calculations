@@ -14,10 +14,11 @@ public class HelloWorldTests
         ILegislationService legislation = new InMemoryLegislationService();
         IPaySlipCalculator calculator = new PaySlipCalculator(new Formulas());
 
-        IPaySlipManager manager = new PaySlipManager(persistance, legislation, calculator, new("0.1.0.0"));
+        IPaySlipManager manager = new PaySlipManager(persistance, legislation, calculator);
         PaySlipRequest paySlipRequest = new(
             new("Stefan", "Bozov"),
-            60_050, 9,
+            60_050,
+             9,
             "March",
             2,
             12,

@@ -17,13 +17,12 @@ namespace PaySmartly.Calculations
     public class PaySlipManager(
         IPaySlipPersistance persistance,
         ILegislationService legislation,
-        IPaySlipCalculator calculator,
-        ServiceIdentity myIdentity) : IPaySlipManager
+        IPaySlipCalculator calculator) : IPaySlipManager
     {
         private readonly IPaySlipPersistance persistance = persistance;
         private readonly ILegislationService legislation = legislation;
         private readonly IPaySlipCalculator calculator = calculator;
-        private readonly ServiceIdentity myIdentity = myIdentity;
+        private readonly ServiceIdentity myIdentity = new(""); //TODO: !!!
 
         public async Task<PaySlipRecordDto?> CreatePaySlip(PaySlipRequest paySlipRequest)
         {
