@@ -5,5 +5,7 @@ namespace PaySmartly.Calculations.Entities
                 double AnnualSalary,
                 double SuperRate,
                 string PayPeriod,
+                int RoundTo,
+                int Months,
                 RequesterIdentity Requester);
 }
