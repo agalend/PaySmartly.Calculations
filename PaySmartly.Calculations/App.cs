@@ -11,7 +11,6 @@ namespace PaySmartly.Calculations
         {
             WebApplication app = CreateWebApplication(args);
 
-
             app.MapPost("/payslips", async (PaySlipRequest request, IPaySlipManager paySlipManager) =>
             {
                 PaySlipRecordDto? paySlipRecordDto = await paySlipManager.CreatePaySlip(request);
@@ -37,6 +36,7 @@ namespace PaySmartly.Calculations
             builder.Services.AddSingleton<ILegislationService, InMemoryLegislationService>(); // Singleton or Scoped ??? Will decide after implementing the grpc client
             builder.Services.AddScoped<IFormulas, Formulas>();
             builder.Services.AddScoped<IPaySlipCalculator, PaySlipCalculator>();
+            builder.Services.AddSingleton(new ServiceIdentity("0.1.0.0")); // TODO: add current version
             builder.Services.AddScoped<IPaySlipManager, PaySlipManager>();
 
             WebApplication app = builder.Build();

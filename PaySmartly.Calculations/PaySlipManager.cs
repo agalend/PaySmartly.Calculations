@@ -17,12 +17,13 @@ namespace PaySmartly.Calculations
     public class PaySlipManager(
         IPaySlipPersistance persistance,
         ILegislationService legislation,
-        IPaySlipCalculator calculator) : IPaySlipManager
+        IPaySlipCalculator calculator,
+        ServiceIdentity myIdentity) : IPaySlipManager
     {
         private readonly IPaySlipPersistance persistance = persistance;
         private readonly ILegislationService legislation = legislation;
         private readonly IPaySlipCalculator calculator = calculator;
-        private readonly ServiceIdentity myIdentity = new(""); //TODO: !!!
+        private readonly ServiceIdentity myIdentity = myIdentity;
 
         public async Task<PaySlipRecordDto?> CreatePaySlip(PaySlipRequest paySlipRequest)
         {
@@ -69,7 +70,7 @@ namespace PaySmartly.Calculations
             TaxableIncomeTable taxableIncomeTable = legislationResult.Value;
 
             CalculatedPaySlip calculated = calculator.Calculate(paySlipRequest, taxableIncomeTable);
-            PaySlipCreateRecordRequest request = ConvertToPlaySlipCreateRecordRequest(calculated, legislationIdentity, myIdentity);
+            PaySlipCreateRecordRequest request = ConvertToPlaySlipCreateRecordRequest(calculated, myIdentity, legislationIdentity);
             return request;
         }
     }
