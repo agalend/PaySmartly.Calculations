@@ -2,6 +2,15 @@ using PaySmartly.Calculations.Entities;
 
 namespace PaySmartly.Calculations
 {
+    // TODO: add filters (validate input arguments)
+    // TODO: handle errors
+    // TODO: HATEOAS 
+    // TODO: add swagger 
+    // TODO: add logging
+    // TODO: add docker (publish the image somewhere)
+    // TODO: write more unit tests
+    // TODO: add integration tests
+    // TODO: add github actions
     public class PaySlipFacade(WebApplication app)
     {
         private readonly WebApplication app = app;

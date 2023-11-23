@@ -14,6 +14,7 @@ public class PaySlipCalculationsTests
         IPaySlipPersistance persistance = new InMemoryPaySlipPersistance(); // TODO: move InMemoryPaySlipPersistance to here
         ILegislationService legislation = new InMemoryLegislationService(); // TODO: move InMemoryLegislationService to here
         IPaySlipCalculator calculator = new PaySlipCalculator(new Formulas());
+
         paySlipManager = new PaySlipManager(persistance, legislation, calculator, new("0.1.0.0"));
     }
 
