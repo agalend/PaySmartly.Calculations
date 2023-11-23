@@ -32,7 +32,7 @@ namespace PaySmartly.Calculations
             ServiceResult<PaySlipCreateRecordResponse> persistanceServiceResult = await persistance.CreatePaySlipRecord(createRecordRequest);
             PaySlipRecord? paySlipRecord = persistanceServiceResult.Value.PaySlipRecord;
 
-            PaySlipRecordDto? paySlipDto = paySlipRecord == null
+            PaySlipRecordDto? paySlipDto = paySlipRecord is null
                 ? default
                 : ConvertToPlaySlipRecordDto(paySlipRecord);
 
@@ -44,7 +44,7 @@ namespace PaySmartly.Calculations
             ServiceResult<PaySlipCreateRecordResponse> result = await persistance.GetPaySlipRecord(id);
             PaySlipRecord? record = result.Value.PaySlipRecord;
 
-            PaySlipRecordDto? paySlipDto = record == null
+            PaySlipRecordDto? paySlipDto = record is null
                 ? default
                 : ConvertToPlaySlipRecordDto(record);
 
@@ -56,7 +56,7 @@ namespace PaySmartly.Calculations
             ServiceResult<PaySlipCreateRecordResponse> result = await persistance.DeletePaySlipRecord(id);
             PaySlipRecord? record = result.Value.PaySlipRecord;
 
-            PaySlipRecordDto? paySlipDto = record == null
+            PaySlipRecordDto? paySlipDto = record is null
                 ? default
                 : ConvertToPlaySlipRecordDto(record);
 

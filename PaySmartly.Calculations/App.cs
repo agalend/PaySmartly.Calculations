@@ -11,20 +11,13 @@ namespace PaySmartly.Calculations
         {
             WebApplication app = CreateWebApplication(args);
 
-            app.MapPost("/payslips", async (PaySlipRequest request, IPaySlipManager paySlipManager) =>
-            {
-                PaySlipRecordDto? paySlipRecordDto = await paySlipManager.CreatePaySlip(request);
-                if (paySlipRecordDto == null)
-                {
-                    return Results.Problem();
-                }
-                else
-                {
-                    return Results.Created($"/payslips/{paySlipRecordDto.Id}", paySlipRecordDto);
-                }
-            });
+            PaySlipFacade paySlipFacade = new(app);
 
-            app.Run();
+            paySlipFacade.RegisterCreatePaySlipMethod();
+            paySlipFacade.RegisterGetPaySlipMethod();
+            paySlipFacade.RegisterDeletePaySlipMethod();
+
+            paySlipFacade.Run();
         }
 
         private WebApplication CreateWebApplication(string[] args)
@@ -32,15 +25,21 @@ namespace PaySmartly.Calculations
             // will use CreateSlimBuilder in order to be prepared for an AOT compilation
             WebApplicationBuilder builder = WebApplication.CreateSlimBuilder(args);
 
+            builder = AddServices(builder);
+
+            WebApplication app = builder.Build();
+            return app;
+        }
+
+        private WebApplicationBuilder AddServices(WebApplicationBuilder builder)
+        {
             builder.Services.AddSingleton<IPaySlipPersistance, InMemoryPaySlipPersistance>(); // Singleton or Scoped ??? Will decide after implementing the grpc client
             builder.Services.AddSingleton<ILegislationService, InMemoryLegislationService>(); // Singleton or Scoped ??? Will decide after implementing the grpc client
             builder.Services.AddScoped<IFormulas, Formulas>();
             builder.Services.AddScoped<IPaySlipCalculator, PaySlipCalculator>();
             builder.Services.AddSingleton(new ServiceIdentity("0.1.0.0")); // TODO: add current version
             builder.Services.AddScoped<IPaySlipManager, PaySlipManager>();
-
-            WebApplication app = builder.Build();
-            return app;
+            return builder;
         }
     }
 }

@@ -27,10 +27,10 @@ namespace PaySmartly.Calculations.Persistance
         {
             paySlipRecords.TryGetValue(id, out PaySlipRecord? record);
 
-            PaySlipCreateRecordResponse response = record == null ? new(default) : new(record);
+            PaySlipCreateRecordResponse response = record is null ? new(default) : new(record);
+
 
             ServiceResult<PaySlipCreateRecordResponse> result = new(response, Identity);
-
             return Task.FromResult(result);
         }
 
@@ -38,7 +38,7 @@ namespace PaySmartly.Calculations.Persistance
         {
             paySlipRecords.Remove(id, out PaySlipRecord? record);
 
-            PaySlipCreateRecordResponse response = record == null ? new(default) : new(record);
+            PaySlipCreateRecordResponse response = record is null ? new(default) : new(record);
 
             ServiceResult<PaySlipCreateRecordResponse> result = new(response, Identity);
 
