@@ -7,5 +7,8 @@
         "**/appsettings*": true,
         "**/.gitignore": true,
         "**/PaySmartly.sln": true,
-    }
+    },
+    "cSpell.words": [
+        "Bozov"
+    ]
 }
