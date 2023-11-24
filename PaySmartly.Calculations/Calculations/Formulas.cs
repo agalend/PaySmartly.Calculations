@@ -1,6 +1,4 @@
-using System.Text;
 using PaySmartly.Calculations.Entities;
-using System.Linq;
 
 namespace PaySmartly.Calculations.Calculations
 {
@@ -23,10 +21,8 @@ namespace PaySmartly.Calculations.Calculations
 
         public double CalculateIncomeTax(double annualSalary, TaxableIncomeTable table, double months, int roundTo)
         {
-            StringBuilder stringBuilder = new();
-            TaxableRange[] ranges = [.. table.Ranges];
-
             double incomeTax = 0d;
+            TaxableRange[] ranges = [.. table.Ranges];
 
             for (int i = 0; i < ranges.Length; i++)
             {
