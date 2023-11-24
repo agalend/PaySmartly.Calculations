@@ -11,13 +11,13 @@ namespace PaySmartly.Calculations
         {
             WebApplication app = CreateWebApplication(args);
 
-            PaySlipFacade paySlipFacade = new(app);
+            ApiFacade facade = new(app);
 
-            paySlipFacade.RegisterCreatePaySlipMethod();
-            paySlipFacade.RegisterGetPaySlipMethod();
-            paySlipFacade.RegisterDeletePaySlipMethod();
+            facade.RegisterCreatePaySlipMethod();
+            facade.RegisterGetPaySlipMethod();
+            facade.RegisterDeletePaySlipMethod();
 
-            paySlipFacade.Run();
+            facade.Run();
         }
 
         private WebApplication CreateWebApplication(string[] args)
@@ -33,12 +33,11 @@ namespace PaySmartly.Calculations
 
         private WebApplicationBuilder AddServices(WebApplicationBuilder builder)
         {
-            builder.Services.AddSingleton<IPaySlipPersistance, InMemoryPaySlipPersistance>(); // Singleton or Scoped ??? Will decide after implementing the grpc client
-            builder.Services.AddSingleton<ILegislationService, InMemoryLegislationService>(); // Singleton or Scoped ??? Will decide after implementing the grpc client
+            builder.Services.AddSingleton<IPersistance, InMemoryPersistance>(); // Singleton or Scoped ??? Will decide after implementing the grpc client
+            builder.Services.AddSingleton<ILegislation, InMemoryLegislationService>(); // Singleton or Scoped ??? Will decide after implementing the grpc client
             builder.Services.AddScoped<IFormulas, Formulas>();
-            builder.Services.AddScoped<IPaySlipCalculator, PaySlipCalculator>();
-            builder.Services.AddSingleton(new ServiceIdentity("0.1.0.0")); // TODO: add current version
-            builder.Services.AddScoped<IPaySlipManager, PaySlipManager>();
+            builder.Services.AddScoped<ICalculator, Calculator>();
+            builder.Services.AddScoped<IManager, Manager>();
             return builder;
         }
     }

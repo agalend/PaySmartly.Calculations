@@ -1,6 +1,6 @@
 namespace PaySmartly.Calculations.Entities
 {
-    public record class PaySlipRecordDto(
+    public record class RecordDto(
             string Id,
             EmployeeIdentity Employee,
             double AnnualSalary,

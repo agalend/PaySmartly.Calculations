@@ -9,6 +9,7 @@
         "**/PaySmartly.sln": true,
     },
     "cSpell.words": [
-        "Bozov"
+        "Bozov",
+        "HATEOAS"
     ]
 }

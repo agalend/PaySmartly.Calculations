@@ -5,17 +5,17 @@ using PaySmartly.Calculations.Persistance;
 
 namespace PaySmartly.Calculations.Tests;
 
-public class PaySlipCalculationsTests
+public class CalculationsTests
 {
-    private readonly IPaySlipManager paySlipManager;
+    private readonly IManager paySlipManager;
 
-    public PaySlipCalculationsTests()
+    public CalculationsTests()
     {
-        IPaySlipPersistance persistance = new InMemoryPaySlipPersistance(); // TODO: move InMemoryPaySlipPersistance to here
-        ILegislationService legislation = new InMemoryLegislationService(); // TODO: move InMemoryLegislationService to here
-        IPaySlipCalculator calculator = new PaySlipCalculator(new Formulas());
+        IPersistance persistance = new InMemoryPersistance(); // TODO: move InMemoryPaySlipPersistance to here
+        ILegislation legislation = new InMemoryLegislationService(); // TODO: move InMemoryLegislationService to here
+        ICalculator calculator = new Calculator(new Formulas());
 
-        paySlipManager = new PaySlipManager(persistance, legislation, calculator, new("0.1.0.0"));
+        paySlipManager = new Manager(persistance, legislation, calculator);
     }
 
     // TODO: create more tests
@@ -32,8 +32,8 @@ public class PaySlipCalculationsTests
         double expectedNetIncome,
         double expectedSuper)
     {
-        PaySlipRequest paySlipRequest = CreatePaySlipRequest(annualSalary, superRate);
-        PaySlipRecordDto? paySlipRecordDto = await paySlipManager.CreatePaySlip(paySlipRequest);
+        UserRequest paySlipRequest = CreatePaySlipRequest(annualSalary, superRate);
+        RecordDto? paySlipRecordDto = await paySlipManager.CreatePaySlip(paySlipRequest);
 
         Assert.Equal(paySlipRecordDto?.GrossIncome, expectedGrossIncome);
         Assert.Equal(paySlipRecordDto?.IncomeTax, expectedIncomeTax);
@@ -43,16 +43,16 @@ public class PaySlipCalculationsTests
 
     // TODO: test incorrect input
 
-    private PaySlipRequest CreatePaySlipRequest(double annualSalary, double superRate)
+    private UserRequest CreatePaySlipRequest(double annualSalary, double superRate)
     {
-        PaySlipRequest paySlipRequest = new(
+        UserRequest paySlipRequest = new(
             new("Stefan", "Bozov"),
             annualSalary,
              superRate,
             "March",
             2,
             12,
-            new("Unknown", "Unknown"));
+            new("Stefan", "Bozov"));
 
         return paySlipRequest;
     }
