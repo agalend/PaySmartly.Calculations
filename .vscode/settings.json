@@ -11,8 +11,10 @@
     "cSpell.words": [
         "Bozov",
         "createpayslip",
-        "getpayslip",
         "deletepayslip",
+        "deletepayslipbyid",
+        "getpayslip",
+        "getpayslipbyid",
         "HATEOAS"
     ]
 }

@@ -5,7 +5,6 @@ using static PaySmartly.Calculations.Helpers.PaySlipConverter;
 
 namespace PaySmartly.Calculations
 {
-    // TODO: add swagger 
     // TODO: add logging
     // TODO: add docker (publish the image somewhere)
     // TODO: write more unit tests
@@ -14,8 +13,8 @@ namespace PaySmartly.Calculations
     public class ApiFacade(WebApplication app)
     {
         private readonly string createEndpointName = "createpayslip";
-        private readonly string getEndpointName = "getpayslip";
-        private readonly string deleteEndpointName = "deletepayslip";
+        private readonly string getEndpointName = "getpayslipbyid";
+        private readonly string deleteEndpointName = "deletepayslipbyid";
 
         private readonly WebApplication app = app;
 
@@ -36,6 +35,7 @@ namespace PaySmartly.Calculations
                 return Results.Ok(response);
             })
             .WithName(createEndpointName)
+            .WithOpenApi()
             .AddEndpointFilter<CreatePaySlipValidator>();
         }
 
@@ -63,6 +63,7 @@ namespace PaySmartly.Calculations
                 }
             })
             .WithName(getEndpointName)
+            .WithOpenApi()
             .AddEndpointFilter<GetPaySlipValidator>();
         }
 
@@ -87,6 +88,7 @@ namespace PaySmartly.Calculations
 
             })
             .WithName(deleteEndpointName)
+            .WithOpenApi()
             .AddEndpointFilter<DeletePaySlipValidator>();
         }
 

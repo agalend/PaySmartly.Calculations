@@ -1,5 +1,4 @@
 using PaySmartly.Calculations.Calculations;
-using PaySmartly.Calculations.HATEOAS;
 using PaySmartly.Calculations.Legislation;
 using PaySmartly.Calculations.Persistance;
 
@@ -24,24 +23,27 @@ namespace PaySmartly.Calculations
         {
             // will use CreateSlimBuilder in order to be prepared for an AOT compilation
             WebApplicationBuilder builder = WebApplication.CreateSlimBuilder(args);
-            builder = AddServices(builder);
+            AddServices(builder);
 
             WebApplication app = builder.Build();
-            app = AddExceptionHandling(app);
+            AddExceptionHandling(app);
+            AddSwagger(app);
             return app;
         }
 
-        private WebApplicationBuilder AddServices(WebApplicationBuilder builder)
+        private void AddServices(WebApplicationBuilder builder)
         {
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen();
+
             builder.Services.AddSingleton<IPersistance, InMemoryPersistance>(); // Singleton or Scoped ??? Will decide after implementing the grpc client
             builder.Services.AddSingleton<ILegislation, InMemoryLegislationService>(); // Singleton or Scoped ??? Will decide after implementing the grpc client
             builder.Services.AddScoped<IFormulas, Formulas>();
             builder.Services.AddScoped<ICalculator, Calculator>();
             builder.Services.AddScoped<IManager, Manager>();
-            return builder;
         }
 
-        private WebApplication AddExceptionHandling(WebApplication app)
+        private void AddExceptionHandling(WebApplication app)
         {
             if (!app.Environment.IsDevelopment())
             {
@@ -53,8 +55,15 @@ namespace PaySmartly.Calculations
                     });
                 });
             }
+        }
 
-            return app;
+        private void AddSwagger(WebApplication app)
+        {
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseSwagger();
+                app.UseSwaggerUI();
+            }
         }
     }
 }
