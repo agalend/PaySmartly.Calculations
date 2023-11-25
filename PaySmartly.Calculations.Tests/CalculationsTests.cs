@@ -33,12 +33,12 @@ public class CalculationsTests
         double expectedSuper)
     {
         PaySlipRequest paySlipRequest = CreatePaySlipRequest(annualSalary, superRate);
-        PaySlipResponse? paySlipRecordDto = await paySlipManager.CreatePaySlip(paySlipRequest);
+        PaySlipRecord? paySlipRecord = await paySlipManager.CreatePaySlip(paySlipRequest);
 
-        Assert.Equal(paySlipRecordDto?.GrossIncome, expectedGrossIncome);
-        Assert.Equal(paySlipRecordDto?.IncomeTax, expectedIncomeTax);
-        Assert.Equal(paySlipRecordDto?.NetIncome, expectedNetIncome);
-        Assert.Equal(paySlipRecordDto?.Super, expectedSuper);
+        Assert.Equal(paySlipRecord?.GrossIncome, expectedGrossIncome);
+        Assert.Equal(paySlipRecord?.IncomeTax, expectedIncomeTax);
+        Assert.Equal(paySlipRecord?.NetIncome, expectedNetIncome);
+        Assert.Equal(paySlipRecord?.Super, expectedSuper);
     }
 
     // TODO: test incorrect input

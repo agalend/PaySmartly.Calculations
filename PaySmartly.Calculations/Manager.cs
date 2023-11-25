@@ -3,8 +3,6 @@ using PaySmartly.Calculations.Entities;
 using PaySmartly.Calculations.Legislation;
 using PaySmartly.Calculations.Persistance;
 
-using static PaySmartly.Calculations.Helpers.PaySlipConverter;
-
 namespace PaySmartly.Calculations
 {
     public interface IManager

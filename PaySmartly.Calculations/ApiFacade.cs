@@ -24,11 +24,11 @@ namespace PaySmartly.Calculations
             {
                 PaySlipRecord paySlip = await manager.CreatePaySlip(request);
 
-                var links = new List<Link>()
-                {
+                IEnumerable<Link> links =
+                [
                     new (linkGenerator.GetUriByName(context, getEndpointName, values: new{paySlip.Id}), "get_payslip", "GET"),
                     new (linkGenerator.GetUriByName(context, deleteEndpointName, values: new{paySlip.Id}), "delete_payslip", "DELETE")
-                };
+                ];
 
                 PaySlipResponse response = ConvertToPaySlipResponse(paySlip, links);
 
@@ -51,11 +51,11 @@ namespace PaySmartly.Calculations
                 }
                 else
                 {
-                    var links = new List<Link>()
-                    {
+                    IEnumerable<Link> links =
+                    [
                         new (linkGenerator.GetUriByName(context, getEndpointName, values: new{paySlip.Id}), "self", "GET"),
                         new (linkGenerator.GetUriByName(context, deleteEndpointName, values: new{paySlip.Id}), "delete_payslip", "DELETE")
-                    };
+                    ];
 
                     PaySlipResponse response = ConvertToPaySlipResponse(paySlip, links);
 
@@ -81,7 +81,6 @@ namespace PaySmartly.Calculations
                 }
                 else
                 {
-
                     PaySlipResponse response = ConvertToPaySlipResponse(paySlip, new List<Link>());
                     return Results.Ok(response);
                 }
