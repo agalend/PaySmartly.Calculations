@@ -1,5 +1,4 @@
 using PaySmartly.Calculations.Calculations;
-using PaySmartly.Calculations.Entities;
 using PaySmartly.Calculations.Legislation;
 using PaySmartly.Calculations.Persistance;
 
@@ -24,10 +23,10 @@ namespace PaySmartly.Calculations
         {
             // will use CreateSlimBuilder in order to be prepared for an AOT compilation
             WebApplicationBuilder builder = WebApplication.CreateSlimBuilder(args);
-
             builder = AddServices(builder);
 
             WebApplication app = builder.Build();
+            app = AddExceptionHandling(app);
             return app;
         }
 
@@ -39,6 +38,22 @@ namespace PaySmartly.Calculations
             builder.Services.AddScoped<ICalculator, Calculator>();
             builder.Services.AddScoped<IManager, Manager>();
             return builder;
+        }
+
+        private WebApplication AddExceptionHandling(WebApplication app)
+        {
+            if (!app.Environment.IsDevelopment())
+            {
+                app.UseExceptionHandler(exceptionHandlerApp =>
+                {
+                    exceptionHandlerApp.Run(async context =>
+                    {
+                        await Results.Problem().ExecuteAsync(context);
+                    });
+                });
+            }
+
+            return app;
         }
     }
 }

@@ -3,7 +3,6 @@ using PaySmartly.Calculations.Filters;
 
 namespace PaySmartly.Calculations
 {
-    // TODO: handle errors
     // TODO: HATEOAS 
     // TODO: add swagger 
     // TODO: add logging
