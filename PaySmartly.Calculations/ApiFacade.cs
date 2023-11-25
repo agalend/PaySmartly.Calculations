@@ -74,7 +74,17 @@ namespace PaySmartly.Calculations
             {
                 PaySlipRecord? paySlip = await manager.DeletePaySlip(id);
 
-                return paySlip is null ? Results.NotFound() : Results.Ok(paySlip);
+                if (paySlip is null)
+                {
+                    return Results.NotFound();
+                }
+                else
+                {
+
+                    PaySlipResponse response = ConvertToPaySlipResponse(paySlip, new List<Link>());
+                    return Results.Ok(response);
+                }
+
             })
             .WithName(deleteEndpointName)
             .AddEndpointFilter<DeletePaySlipValidator>();
