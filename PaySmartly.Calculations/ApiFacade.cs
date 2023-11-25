@@ -1,8 +1,8 @@
 using PaySmartly.Calculations.Entities;
+using PaySmartly.Calculations.Filters;
 
 namespace PaySmartly.Calculations
 {
-    // TODO: add filters (validate input arguments)
     // TODO: handle errors
     // TODO: HATEOAS 
     // TODO: add swagger 
@@ -22,7 +22,8 @@ namespace PaySmartly.Calculations
                 RecordDto paySlip = await manager.CreatePaySlip(request);
 
                 return paySlip;
-            });
+            })
+            .AddEndpointFilter<CreatePaySlipValidator>();
         }
 
         public void RegisterGetPaySlipMethod()
@@ -35,7 +36,8 @@ namespace PaySmartly.Calculations
                     ? Results.NotFound()
                     : Results.Ok(paySlip);
 
-            });
+            })
+            .AddEndpointFilter<GetPaySlipValidator>();
         }
 
         // There is no UpdatePaySlipMethod intentionally 
@@ -50,7 +52,8 @@ namespace PaySmartly.Calculations
                     ? Results.NotFound()
                     : Results.NoContent();
 
-            });
+            })
+            .AddEndpointFilter<DeletePaySlipValidator>();
         }
 
         public void Run()
