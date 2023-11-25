@@ -1,3 +1,8 @@
+using OpenTelemetry;
+using OpenTelemetry.Logs;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 using PaySmartly.Calculations.Calculations;
 using PaySmartly.Calculations.Exceptions;
 using PaySmartly.Calculations.Legislation;
@@ -7,10 +12,14 @@ namespace PaySmartly.Calculations
 {
     public static class WebApplicationFactory
     {
+        // TODO: set service name somewhere!!!
+        private static readonly string ServiceName = "Calculations Service";
+
         public static WebApplication CreateWebApplication(string[] args)
         {
             // will use CreateSlimBuilder in order to be prepared for an AOT compilation
             WebApplicationBuilder builder = WebApplication.CreateSlimBuilder(args);
+            AddOpenTelemetryLogging(builder);
             AddServices(builder);
 
             WebApplication app = builder.Build();
@@ -21,6 +30,8 @@ namespace PaySmartly.Calculations
 
         private static void AddServices(WebApplicationBuilder builder)
         {
+            AddOpenTelemetryService(builder);
+
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
@@ -29,6 +40,32 @@ namespace PaySmartly.Calculations
             builder.Services.AddScoped<IFormulas, Formulas>();
             builder.Services.AddScoped<ICalculator, Calculator>();
             builder.Services.AddScoped<IManager, Manager>();
+        }
+
+        private static void AddOpenTelemetryLogging(WebApplicationBuilder builder)
+        {
+            builder.Logging.AddOpenTelemetry(options =>
+            {
+                ResourceBuilder resourceBuilder = ResourceBuilder.CreateDefault().AddService(ServiceName);
+
+                options.SetResourceBuilder(resourceBuilder).AddConsoleExporter();
+            });
+        }
+
+        private static void AddOpenTelemetryService(WebApplicationBuilder builder)
+        {
+            OpenTelemetryBuilder openTelemetryBuilder = builder.Services.AddOpenTelemetry();
+
+            openTelemetryBuilder = openTelemetryBuilder.ConfigureResource(resource => resource.AddService(ServiceName));
+
+            openTelemetryBuilder = openTelemetryBuilder.WithTracing(tracing =>
+            {
+                tracing.AddAspNetCoreInstrumentation().AddConsoleExporter();
+            });
+            openTelemetryBuilder = openTelemetryBuilder.WithMetrics(metrics =>
+            {
+                metrics.AddAspNetCoreInstrumentation().AddConsoleExporter();
+            });
         }
 
         private static void AddExceptionHandling(WebApplication app)
