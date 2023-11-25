@@ -8,7 +8,7 @@ namespace PaySmartly.Calculations.Filters
     {
         public async ValueTask<object?> InvokeAsync(EndpointFilterInvocationContext context, EndpointFilterDelegate next)
         {
-            var userRequest = context.GetArgument<UserRequest>(0);
+            var userRequest = context.GetArgument<PaySlipRequest>(0);
 
             EmployeeIdentity? employee = userRequest?.Employee;
             if (string.IsNullOrEmpty(employee?.FirstName) || string.IsNullOrEmpty(employee?.LastName))

@@ -1,13 +1,12 @@
 using PaySmartly.Calculations.Entities;
+using PaySmartly.Calculations.HATEOAS;
 
 namespace PaySmartly.Calculations.Helpers
 {
-    public static class RecordConverter
+    public static class PaySlipConverter
     {
-        public static RecordDto ConvertToRecordDto(Record record)
+        public static PaySlipResponse ConvertToPaySlipResponse(PaySlipRecord record, IEnumerable<Link> links)
         {
-            // we can use AutoMapper but we will do it manually since we have only one mapping to a dto object 
-            // that way we can start using AOT compilation
             return new(
                 record.Id,
                 record.Employee,
@@ -18,7 +17,8 @@ namespace PaySmartly.Calculations.Helpers
                 record.IncomeTax,
                 record.NetIncome,
                 record.Super,
-                record.Requester);
+                record.Requester,
+                links);
         }
     }
 }

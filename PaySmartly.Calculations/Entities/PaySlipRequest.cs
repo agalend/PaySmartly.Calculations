@@ -1,6 +1,6 @@
 namespace PaySmartly.Calculations.Entities
 {
-    public record class UserRequest(
+    public record class PaySlipRequest(
                 EmployeeIdentity Employee,
                 double AnnualSalary,
                 double SuperRate,

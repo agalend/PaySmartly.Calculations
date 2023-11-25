@@ -32,8 +32,8 @@ public class CalculationsTests
         double expectedNetIncome,
         double expectedSuper)
     {
-        UserRequest paySlipRequest = CreatePaySlipRequest(annualSalary, superRate);
-        RecordDto? paySlipRecordDto = await paySlipManager.CreatePaySlip(paySlipRequest);
+        PaySlipRequest paySlipRequest = CreatePaySlipRequest(annualSalary, superRate);
+        PaySlipResponse? paySlipRecordDto = await paySlipManager.CreatePaySlip(paySlipRequest);
 
         Assert.Equal(paySlipRecordDto?.GrossIncome, expectedGrossIncome);
         Assert.Equal(paySlipRecordDto?.IncomeTax, expectedIncomeTax);
@@ -43,9 +43,9 @@ public class CalculationsTests
 
     // TODO: test incorrect input
 
-    private UserRequest CreatePaySlipRequest(double annualSalary, double superRate)
+    private PaySlipRequest CreatePaySlipRequest(double annualSalary, double superRate)
     {
-        UserRequest paySlipRequest = new(
+        PaySlipRequest paySlipRequest = new(
             new("Stefan", "Bozov"),
             annualSalary,
              superRate,

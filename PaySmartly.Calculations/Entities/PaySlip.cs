@@ -1,9 +1,9 @@
 namespace PaySmartly.Calculations.Entities
 {
-    public record class PaySlip : UserRequest
+    public record class PaySlip : PaySlipRequest
     {
         public PaySlip(
-            UserRequest request,
+            PaySlipRequest request,
             double grossIncome,
             double incomeTax,
             double netIncome,

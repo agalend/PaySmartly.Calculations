@@ -6,28 +6,28 @@ namespace PaySmartly.Calculations.Persistance
     public class InMemoryPersistance : IPersistance
     {
         private int currentId = -1;
-        private readonly ConcurrentDictionary<string, Record> records = new();
+        private readonly ConcurrentDictionary<string, PaySlipRecord> records = new();
 
-        public Task<Record> Create(PaySlip paySlip)
+        public Task<PaySlipRecord> Create(PaySlip paySlip)
         {
             string id = GenerateNextId(ref currentId);
 
-            Record record = new(id, paySlip);
-            Record added = records.AddOrUpdate(id, record, (key, old) => record);
+            PaySlipRecord record = new(id, paySlip);
+            PaySlipRecord added = records.AddOrUpdate(id, record, (key, old) => record);
 
             return Task.FromResult(added);
         }
 
-        public Task<Record?> Get(string recordId)
+        public Task<PaySlipRecord?> Get(string recordId)
         {
-            records.TryGetValue(recordId, out Record? record);
+            records.TryGetValue(recordId, out PaySlipRecord? record);
 
             return Task.FromResult(record);
         }
 
-        public Task<Record?> Delete(string recordId)
+        public Task<PaySlipRecord?> Delete(string recordId)
         {
-            records.Remove(recordId, out Record? record);
+            records.Remove(recordId, out PaySlipRecord? record);
 
             return Task.FromResult(record);
         }

@@ -1,8 +1,8 @@
 namespace PaySmartly.Calculations.Entities
 {
-    public record class Record : PaySlip
+    public record class PaySlipRecord : PaySlip
     {
-        public Record(
+        public PaySlipRecord(
             string id,
             PaySlip request)
                 : base(request)

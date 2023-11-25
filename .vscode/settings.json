@@ -1,7 +1,7 @@
 {
     "dotnet.defaultSolution": "PaySmartly.sln",
     "files.exclude": {
-        "**/obj": true,         
+        "**/obj": true,
         "**/bin": true,
         "**/*.csproj": true,
         "**/appsettings*": true,
@@ -10,6 +10,9 @@
     },
     "cSpell.words": [
         "Bozov",
+        "createpayslip",
+        "getpayslip",
+        "deletepayslip",
         "HATEOAS"
     ]
 }

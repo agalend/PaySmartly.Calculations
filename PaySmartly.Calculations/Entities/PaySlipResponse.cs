@@ -1,6 +1,8 @@
+using PaySmartly.Calculations.HATEOAS;
+
 namespace PaySmartly.Calculations.Entities
 {
-    public record class RecordDto(
+    public record class PaySlipResponse(
             string Id,
             EmployeeIdentity Employee,
             double AnnualSalary,
@@ -10,5 +12,6 @@ namespace PaySmartly.Calculations.Entities
             double IncomeTax,
             double NetIncome,
             double Super,
-            RequesterIdentity Requester);
+            RequesterIdentity Requester,
+            IEnumerable<Link> Links);
 }

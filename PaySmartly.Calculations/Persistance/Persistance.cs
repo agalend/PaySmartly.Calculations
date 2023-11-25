@@ -4,24 +4,24 @@ namespace PaySmartly.Calculations.Persistance
 {
     public interface IPersistance
     {
-        Task<Record> Create(PaySlip paySlip);
-        Task<Record?> Get(string id);
-        Task<Record?> Delete(string id);
+        Task<PaySlipRecord> Create(PaySlip paySlip);
+        Task<PaySlipRecord?> Get(string id);
+        Task<PaySlipRecord?> Delete(string id);
     }
 
     public class Persistance : IPersistance
     {
-        public Task<Record> Create(PaySlip paySlip)
+        public Task<PaySlipRecord> Create(PaySlip paySlip)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Record?> Delete(string recordId)
+        public Task<PaySlipRecord?> Delete(string recordId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Record?> Get(string recordId)
+        public Task<PaySlipRecord?> Get(string recordId)
         {
             throw new NotImplementedException();
         }

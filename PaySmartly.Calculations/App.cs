@@ -1,4 +1,5 @@
 using PaySmartly.Calculations.Calculations;
+using PaySmartly.Calculations.HATEOAS;
 using PaySmartly.Calculations.Legislation;
 using PaySmartly.Calculations.Persistance;
 
