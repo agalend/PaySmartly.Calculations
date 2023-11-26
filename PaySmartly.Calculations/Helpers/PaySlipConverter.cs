@@ -5,7 +5,7 @@ namespace PaySmartly.Calculations.Helpers
 {
     public static class PaySlipConverter
     {
-        public static PaySlipResponse ConvertToPaySlipResponse(PaySlipRecord record, IEnumerable<Link> links)
+        public static PaySlipResponse ConvertToResponse(PaySlipRecord record, IEnumerable<Link> links)
         {
             return new(
                 record.Id,
