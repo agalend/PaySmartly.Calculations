@@ -23,7 +23,7 @@ namespace PaySmartly.Calculations.Filters
             }
 
             double? superRate = userRequest?.SuperRate;
-            if (superRate is null || superRate <= 0d)
+            if (superRate is null || superRate < 0d)
             {
                 return Results.BadRequest($"Invalid {nameof(superRate)} value, you should provide a positive, bigger than 0 super rate");
             }
