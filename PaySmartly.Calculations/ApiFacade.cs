@@ -31,7 +31,7 @@ namespace PaySmartly.Calculations
                     new (linkGenerator.GetUriByName(context, DeleteEndpoint.Name, values: new{paySlip.Id}), DeleteEndpoint.Name, DeleteEndpoint.Method)
                 ];
 
-                PaySlipResponse response = ConvertToResponse(paySlip, links);
+                PaySlipResponse response = Convert(paySlip, links);
 
                 return Results.Ok(response);
             })
@@ -58,7 +58,7 @@ namespace PaySmartly.Calculations
                         new (linkGenerator.GetUriByName(context, DeleteEndpoint.Name, values: new{paySlip.Id}), DeleteEndpoint.Name, DeleteEndpoint.Method)
                     ];
 
-                    PaySlipResponse response = ConvertToResponse(paySlip, links);
+                    PaySlipResponse response = Convert(paySlip, links);
 
                     return Results.Ok(response); ;
                 }
@@ -82,7 +82,7 @@ namespace PaySmartly.Calculations
                 }
                 else
                 {
-                    PaySlipResponse response = ConvertToResponse(paySlip, new List<Link>());
+                    PaySlipResponse response = Convert(paySlip, new List<Link>());
                     return Results.Ok(response);
                 }
 

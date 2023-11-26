@@ -4,6 +4,6 @@ namespace PaySmartly.Calculations.Endpoints
     {
         public static PaySlipEndpoint CreateEndpoint = new("/payslips", "createPaySlip", "POST");
         public static PaySlipEndpoint GetEndpoint = new("/payslips/{id}", "getPaySlipById", "GET");
-        public static PaySlipEndpoint DeleteEndpoint = new("/payslips/{id}", "deletePaySlipByid", "DELETE");
+        public static PaySlipEndpoint DeleteEndpoint = new("/payslips/{id}", "deletePaySlipById", "DELETE");
     }
 }

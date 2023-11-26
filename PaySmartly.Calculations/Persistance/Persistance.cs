@@ -1,4 +1,7 @@
 using PaySmartly.Calculations.Entities;
+using PaySmartly.Persistance;
+using static PaySmartly.Persistance.Persistance;
+using static PaySmartly.Calculations.Helpers.PaySlipConverter;
 
 namespace PaySmartly.Calculations.Persistance
 {
@@ -9,21 +12,37 @@ namespace PaySmartly.Calculations.Persistance
         Task<PaySlipRecord?> Delete(string id);
     }
 
-    public class Persistance : IPersistance
+    public class Persistance(PersistanceClient client) : IPersistance
     {
-        public Task<PaySlipRecord> Create(PaySlip paySlip)
+        private readonly PersistanceClient client = client;
+
+        public async Task<PaySlipRecord> Create(PaySlip paySlip)
         {
-            throw new NotImplementedException();
+            CreateRequest request = Convert(paySlip);
+            Record record = await client.CreateAsync(request);
+
+            PaySlipRecord paySlipRecord = Convert(record);
+            return paySlipRecord;
         }
 
-        public Task<PaySlipRecord?> Delete(string recordId)
+        public async Task<PaySlipRecord?> Get(string recordId)
         {
-            throw new NotImplementedException();
+            GetRequest request = new() { Id = recordId };
+            Record record = await client.GetAsync(request);
+
+            return record.Data is null
+            ? default
+            : Convert(record);
         }
 
-        public Task<PaySlipRecord?> Get(string recordId)
+        public async Task<PaySlipRecord?> Delete(string recordId)
         {
-            throw new NotImplementedException();
+            DeleteRequest request = new() { Id = recordId };
+            Record record = await client.DeleteAsync(request);
+
+            return record.Data is null
+            ? default
+            : Convert(record);
         }
     }
 }

@@ -7,6 +7,7 @@ using PaySmartly.Calculations.Calculations;
 using PaySmartly.Calculations.Exceptions;
 using PaySmartly.Calculations.Legislation;
 using PaySmartly.Calculations.Persistance;
+using static PaySmartly.Persistance.Persistance;
 
 namespace PaySmartly.Calculations
 {
@@ -18,7 +19,7 @@ namespace PaySmartly.Calculations
         public static WebApplication CreateWebApplication(string[] args)
         {
             // will use CreateSlimBuilder in order to be prepared for an AOT compilation
-            WebApplicationBuilder builder = WebApplication.CreateSlimBuilder(args);
+            WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
             AddOpenTelemetryLogging(builder);
             AddServices(builder);
 
@@ -35,8 +36,13 @@ namespace PaySmartly.Calculations
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            builder.Services.AddSingleton<IPersistance, InMemoryPersistance>(); // Singleton or Scoped ??? Will decide after implementing the grpc client
-            builder.Services.AddSingleton<ILegislation, InMemoryLegislationService>(); // Singleton or Scoped ??? Will decide after implementing the grpc client
+            builder.Services.AddGrpcClient<PersistanceClient>(options =>
+            {
+                // TODO: get from config
+                options.Address = new Uri("http://localhost:5103");
+            });
+            builder.Services.AddScoped<IPersistance, Persistance.Persistance>();
+            builder.Services.AddScoped<ILegislation, InMemoryLegislationService>();
             builder.Services.AddScoped<IFormulas, Formulas>();
             builder.Services.AddScoped<ICalculator, Calculator>();
             builder.Services.AddScoped<IManager, Manager>();
