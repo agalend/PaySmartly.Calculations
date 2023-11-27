@@ -24,7 +24,7 @@ namespace PaySmartly.Calculations.Helpers
 
         public static PaySlipRecord Convert(Record record)
         {
-            PaySlipData data = record.Data;
+            Data data = record.Data;
 
             PaySlipRequest request = new(
                 new EmployeeIdentity(data.EmployeeFirstName, data.EmployeeLastName),
@@ -52,7 +52,7 @@ namespace PaySmartly.Calculations.Helpers
         {
             return new CreateRequest
             {
-                Data = new PaySlipData
+                Data = new()
                 {
                     EmployeeFirstName = paySlip.Employee.FirstName,
                     EmployeeLastName = paySlip.Employee.LastName,

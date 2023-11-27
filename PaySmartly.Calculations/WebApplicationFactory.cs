@@ -19,7 +19,7 @@ namespace PaySmartly.Calculations
         public static WebApplication CreateWebApplication(string[] args)
         {
             // will use CreateSlimBuilder in order to be prepared for an AOT compilation
-            WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+            WebApplicationBuilder builder = WebApplication.CreateSlimBuilder(args);
             AddOpenTelemetryLogging(builder);
             AddServices(builder);
 

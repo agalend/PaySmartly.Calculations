@@ -4,7 +4,6 @@
         "**/obj": true,
         "**/bin": true,
         "**/*.csproj": true,
-        "**/appsettings*": true,
         "**/.gitignore": true,
         "**/PaySmartly.sln": true,
     },
