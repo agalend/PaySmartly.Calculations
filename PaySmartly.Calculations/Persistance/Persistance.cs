@@ -7,42 +7,38 @@ namespace PaySmartly.Calculations.Persistance
 {
     public interface IPersistance
     {
-        Task<PaySlipRecord> Create(PaySlip paySlip);
+        Task<PaySlipRecord?> Create(PaySlip paySlip);
         Task<PaySlipRecord?> Get(string id);
         Task<PaySlipRecord?> Delete(string id);
     }
 
     public class Persistance(PersistanceClient client) : IPersistance
     {
-        private readonly PersistanceClient client = client;
+        private readonly PersistanceClient persistanceClient = client;
 
-        public async Task<PaySlipRecord> Create(PaySlip paySlip)
+        public async Task<PaySlipRecord?> Create(PaySlip paySlip)
         {
-            CreateRequest request = Convert(paySlip);
-            Record record = await client.CreateAsync(request);
+            DateTime createdAt = DateTime.UtcNow;
+            CreateRequest request = Convert(paySlip, createdAt);
+            Response response = await persistanceClient.CreateAsync(request);
 
-            PaySlipRecord paySlipRecord = Convert(record);
-            return paySlipRecord;
+            return !response.Exists ? default : Convert(response.Record);
         }
 
         public async Task<PaySlipRecord?> Get(string recordId)
         {
             GetRequest request = new() { Id = recordId };
-            Record record = await client.GetAsync(request);
+            Response response = await persistanceClient.GetAsync(request);
 
-            return record.Data is null
-            ? default
-            : Convert(record);
+            return !response.Exists ? default : Convert(response.Record);
         }
 
         public async Task<PaySlipRecord?> Delete(string recordId)
         {
             DeleteRequest request = new() { Id = recordId };
-            Record record = await client.DeleteAsync(request);
+            Response response = await persistanceClient.DeleteAsync(request);
 
-            return record.Data is null
-            ? default
-            : Convert(record);
+            return !response.Exists ? default : Convert(response.Record);
         }
     }
 }

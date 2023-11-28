@@ -23,17 +23,24 @@ namespace PaySmartly.Calculations
         {
             app.MapPost(CreateEndpoint.Pattern, async (PaySlipRequest request, IManager manager, HttpContext context, LinkGenerator linkGenerator) =>
             {
-                PaySlipRecord paySlip = await manager.CreatePaySlip(request);
+                PaySlipRecord? paySlip = await manager.CreatePaySlip(request);
 
-                IEnumerable<Link> links =
-                [
-                    new (linkGenerator.GetUriByName(context, GetEndpoint.Name, values: new{paySlip.Id}), GetEndpoint.Name, GetEndpoint.Method),
-                    new (linkGenerator.GetUriByName(context, DeleteEndpoint.Name, values: new{paySlip.Id}), DeleteEndpoint.Name, DeleteEndpoint.Method)
-                ];
+                if (paySlip is null)
+                {
+                    return Results.Conflict();
+                }
+                else
+                {
+                    IEnumerable<Link> links =
+                        [
+                            new (linkGenerator.GetUriByName(context, GetEndpoint.Name, values: new{paySlip.Id}), GetEndpoint.Name, GetEndpoint.Method),
+                            new (linkGenerator.GetUriByName(context, DeleteEndpoint.Name, values: new{paySlip.Id}), DeleteEndpoint.Name, DeleteEndpoint.Method)
+                        ];
 
-                PaySlipResponse response = Convert(paySlip, links);
+                    PaySlipResponse response = Convert(paySlip, links);
 
-                return Results.Ok(response);
+                    return Results.Ok(response);
+                }
             })
             .WithName(CreateEndpoint.Name)
             .WithOpenApi()

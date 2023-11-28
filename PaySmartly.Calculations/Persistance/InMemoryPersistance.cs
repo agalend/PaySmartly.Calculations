@@ -8,14 +8,14 @@ namespace PaySmartly.Calculations.Persistance
         private int currentId = -1;
         private readonly ConcurrentDictionary<string, PaySlipRecord> records = new();
 
-        public Task<PaySlipRecord> Create(PaySlip paySlip)
+        public Task<PaySlipRecord?> Create(PaySlip paySlip)
         {
             string id = GenerateNextId(ref currentId);
 
             PaySlipRecord record = new(id, paySlip);
             PaySlipRecord added = records.AddOrUpdate(id, record, (key, old) => record);
 
-            return Task.FromResult(added);
+            return Task.FromResult<PaySlipRecord?>(added);
         }
 
         public Task<PaySlipRecord?> Get(string recordId)

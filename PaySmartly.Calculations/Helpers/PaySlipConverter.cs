@@ -1,3 +1,4 @@
+using Google.Protobuf.WellKnownTypes;
 using PaySmartly.Calculations.Entities;
 using PaySmartly.Calculations.HATEOAS;
 using PaySmartly.Persistance;
@@ -24,35 +25,33 @@ namespace PaySmartly.Calculations.Helpers
 
         public static PaySlipRecord Convert(Record record)
         {
-            Data data = record.Data;
-
             PaySlipRequest request = new(
-                new EmployeeIdentity(data.EmployeeFirstName, data.EmployeeLastName),
-                data.AnnualSalary,
-                data.SuperRate,
-                data.PayPeriod,
-                data.RoundTo,
-                data.Months,
-                new RequesterIdentity(data.RequesterFirstName, data.RequesterLastName)
+                new EmployeeIdentity(record.EmployeeFirstName, record.EmployeeLastName),
+                record.AnnualSalary,
+                record.SuperRate,
+                record.PayPeriod,
+                record.RoundTo,
+                record.Months,
+                new RequesterIdentity(record.RequesterFirstName, record.RequesterLastName)
             );
 
             PaySlip paySlip = new(
                 request,
-                data.GrossIncome,
-                data.IncomeTax,
-                data.NetIncome,
-                data.Super
+                record.GrossIncome,
+                record.IncomeTax,
+                record.NetIncome,
+                record.Super
             );
 
             PaySlipRecord paySlipRecord = new(record.Id, paySlip);
             return paySlipRecord;
         }
 
-        public static CreateRequest Convert(PaySlip paySlip)
+        public static CreateRequest Convert(PaySlip paySlip, DateTime createdAt)
         {
             return new CreateRequest
             {
-                Data = new()
+                Record = new()
                 {
                     EmployeeFirstName = paySlip.Employee.FirstName,
                     EmployeeLastName = paySlip.Employee.LastName,
@@ -66,7 +65,8 @@ namespace PaySmartly.Calculations.Helpers
                     NetIncome = paySlip.NetIncome,
                     Super = paySlip.Super,
                     RequesterFirstName = paySlip.Requester.FirstName,
-                    RequesterLastName = paySlip.Requester.LastName
+                    RequesterLastName = paySlip.Requester.LastName,
+                    CreatedAt = Timestamp.FromDateTime(createdAt)
                 }
             };
         }
