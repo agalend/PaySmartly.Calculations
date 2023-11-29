@@ -7,6 +7,7 @@ using PaySmartly.Calculations.Calculations;
 using PaySmartly.Calculations.Exceptions;
 using PaySmartly.Calculations.Legislation;
 using PaySmartly.Calculations.Persistance;
+using static PaySmartly.Legislation.Legislation;
 using static PaySmartly.Persistance.Persistance;
 
 namespace PaySmartly.Calculations
@@ -41,8 +42,16 @@ namespace PaySmartly.Calculations
                 // TODO: get from config
                 options.Address = new Uri("http://localhost:5103");
             });
+
+            builder.Services.AddGrpcClient<LegislationClient>(options =>
+            {
+                // TODO: get from config
+                options.Address = new Uri("http://localhost:5016");
+            });
+
+
             builder.Services.AddScoped<IPersistance, Persistance.Persistance>();
-            builder.Services.AddScoped<ILegislation, InMemoryLegislationService>();
+            builder.Services.AddScoped<ILegislation, Legislation.Legislation>();
             builder.Services.AddScoped<IFormulas, Formulas>();
             builder.Services.AddScoped<ICalculator, Calculator>();
             builder.Services.AddScoped<IManager, Manager>();

@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using Google.Protobuf.WellKnownTypes;
 using PaySmartly.Calculations.Entities;
 using PaySmartly.Calculations.HATEOAS;
@@ -69,6 +70,19 @@ namespace PaySmartly.Calculations.Helpers
                     CreatedAt = Timestamp.FromDateTime(createdAt)
                 }
             };
+        }
+
+        public static TaxableIncomeTable Convert(PaySmartly.Legislation.TaxableIncomeTable table)
+        {
+            List<TaxableRange> ranges = [];
+            foreach (var range in table.Ranges)
+            {
+                TaxableRange r = new(range.Start, range.End, range.Tax);
+                ranges.Add(r);
+            }
+
+            TaxableIncomeTable taxableIncomeTable = new(ranges);
+            return taxableIncomeTable;
         }
     }
 }
