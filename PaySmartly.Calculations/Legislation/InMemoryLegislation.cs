@@ -19,7 +19,7 @@ namespace PaySmartly.Calculations.Legislation
             taxableIncomeTable = new(ranges);
         }
 
-        public Task<TaxableIncomeTable> GetTaxableIncomeTable(string month)
+        public Task<TaxableIncomeTable> GetTaxableIncomeTable(DateTime period)
         {
             return Task.FromResult(taxableIncomeTable);
         }

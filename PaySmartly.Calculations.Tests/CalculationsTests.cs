@@ -49,7 +49,7 @@ public class CalculationsTests
             new("Stefan", "Bozov"),
             annualSalary,
              superRate,
-            "March",
+            DateTime.Now,
             2,
             12,
             new("Stefan", "Bozov"));

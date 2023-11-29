@@ -7,7 +7,7 @@ namespace PaySmartly.Calculations.Entities
             EmployeeIdentity Employee,
             double AnnualSalary,
             double SuperRate,
-            string PayPeriod,
+            DateTime PayPeriod,
             double GrossIncome,
             double IncomeTax,
             double NetIncome,

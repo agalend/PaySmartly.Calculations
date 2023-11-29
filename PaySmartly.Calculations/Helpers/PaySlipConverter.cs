@@ -29,7 +29,7 @@ namespace PaySmartly.Calculations.Helpers
                 new EmployeeIdentity(record.EmployeeFirstName, record.EmployeeLastName),
                 record.AnnualSalary,
                 record.SuperRate,
-                record.PayPeriod,
+                record.PayPeriod.ToDateTime(),
                 record.RoundTo,
                 record.Months,
                 new RequesterIdentity(record.RequesterFirstName, record.RequesterLastName)
@@ -57,7 +57,7 @@ namespace PaySmartly.Calculations.Helpers
                     EmployeeLastName = paySlip.Employee.LastName,
                     AnnualSalary = paySlip.AnnualSalary,
                     SuperRate = paySlip.SuperRate,
-                    PayPeriod = paySlip.PayPeriod,
+                    PayPeriod = paySlip.PayPeriod.ToTimestamp(),
                     RoundTo = paySlip.RoundTo,
                     Months = paySlip.Months,
                     GrossIncome = paySlip.GrossIncome,

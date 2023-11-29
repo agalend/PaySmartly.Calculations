@@ -4,14 +4,14 @@ namespace PaySmartly.Calculations.Legislation
 {
     public interface ILegislation
     {
-        Task<TaxableIncomeTable> GetTaxableIncomeTable(string month);
+        Task<TaxableIncomeTable> GetTaxableIncomeTable(DateTime period);
         Task<bool> IsValidIRD(IRD ird);
     }
 
     public class Legislation : ILegislation
     {
 
-        public Task<TaxableIncomeTable> GetTaxableIncomeTable(string month)
+        public Task<TaxableIncomeTable> GetTaxableIncomeTable(DateTime period)
         {
             throw new NotImplementedException();
         }

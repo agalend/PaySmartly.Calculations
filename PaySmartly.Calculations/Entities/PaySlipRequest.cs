@@ -4,7 +4,7 @@ namespace PaySmartly.Calculations.Entities
                 EmployeeIdentity Employee,
                 double AnnualSalary,
                 double SuperRate,
-                string PayPeriod,
+                DateTime PayPeriod,
                 int RoundTo,
                 int Months,
                 RequesterIdentity Requester);
