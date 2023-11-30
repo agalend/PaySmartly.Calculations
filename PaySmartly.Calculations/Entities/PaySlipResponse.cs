@@ -1,5 +1,3 @@
-using PaySmartly.Calculations.HATEOAS;
-
 namespace PaySmartly.Calculations.Entities
 {
     public record class PaySlipResponse(
@@ -12,6 +10,5 @@ namespace PaySmartly.Calculations.Entities
             double IncomeTax,
             double NetIncome,
             double Super,
-            RequesterIdentity Requester,
-            IEnumerable<Link> Links);
+            RequesterIdentity Requester);
 }

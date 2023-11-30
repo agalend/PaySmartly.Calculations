@@ -1,14 +1,12 @@
-using System.Collections.ObjectModel;
 using Google.Protobuf.WellKnownTypes;
 using PaySmartly.Calculations.Entities;
-using PaySmartly.Calculations.HATEOAS;
 using PaySmartly.Persistance;
 
 namespace PaySmartly.Calculations.Helpers
 {
     public static class PaySlipConverter
     {
-        public static PaySlipResponse Convert(PaySlipRecord record, IEnumerable<Link> links)
+        public static PaySlipResponse Convert(PaySlipRecord record)
         {
             return new(
                 record.Id,
@@ -20,8 +18,7 @@ namespace PaySmartly.Calculations.Helpers
                 record.IncomeTax,
                 record.NetIncome,
                 record.Super,
-                record.Requester,
-                links);
+                record.Requester);
         }
 
         public static PaySlipRecord Convert(Record record)

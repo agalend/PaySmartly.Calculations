@@ -10,8 +10,6 @@ namespace PaySmartly.Calculations
             ApiFacade facade = new(app);
 
             facade.RegisterCreatePaySlipMethod();
-            facade.RegisterGetPaySlipMethod();
-            facade.RegisterDeletePaySlipMethod();
 
             facade.Run();
         }

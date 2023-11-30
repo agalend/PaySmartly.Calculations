@@ -8,8 +8,6 @@ namespace PaySmartly.Calculations
     public interface IManager
     {
         Task<PaySlipRecord?> CreatePaySlip(PaySlipRequest request);
-        Task<PaySlipRecord?> GetPaySlip(string recordId);
-        Task<PaySlipRecord?> DeletePaySlip(string recordId);
     }
 
     public class Manager(
@@ -29,18 +27,6 @@ namespace PaySmartly.Calculations
 
             PaySlipRecord? record = await persistance.Create(paySlip);
 
-            return record;
-        }
-
-        public async Task<PaySlipRecord?> GetPaySlip(string recordId)
-        {
-            PaySlipRecord? record = await persistance.Get(recordId);
-            return record;
-        }
-
-        public async Task<PaySlipRecord?> DeletePaySlip(string recordId)
-        {
-            PaySlipRecord? record = await persistance.Delete(recordId);
             return record;
         }
     }

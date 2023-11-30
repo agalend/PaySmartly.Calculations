@@ -18,20 +18,6 @@ namespace PaySmartly.Calculations.Persistance
             return Task.FromResult<PaySlipRecord?>(added);
         }
 
-        public Task<PaySlipRecord?> Get(string recordId)
-        {
-            records.TryGetValue(recordId, out PaySlipRecord? record);
-
-            return Task.FromResult(record);
-        }
-
-        public Task<PaySlipRecord?> Delete(string recordId)
-        {
-            records.Remove(recordId, out PaySlipRecord? record);
-
-            return Task.FromResult(record);
-        }
-
         private static string GenerateNextId(ref int previousId)
         {
             int id = Interlocked.Increment(ref previousId);
