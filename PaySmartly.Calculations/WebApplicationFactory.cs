@@ -40,7 +40,7 @@ namespace PaySmartly.Calculations
             builder.Services.AddGrpcClient<PersistanceClient>(options =>
             {
                 // TODO: get from config
-                options.Address = new Uri("http://localhost:5103");
+                options.Address = new Uri("http://localhost:8000");
             });
 
             builder.Services.AddGrpcClient<LegislationClient>(options =>
