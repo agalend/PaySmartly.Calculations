@@ -8,7 +8,7 @@ namespace PaySmartly.Calculations.Legislation
 {
     public interface ILegislation
     {
-        Task<Entities.TaxableIncomeTable> GetTaxableIncomeTable(DateTime period);
+        Task<Entities.TaxableIncomeTable> GetTaxableIncomeTable(DateTime payPeriodFrom, DateTime payPeriodTo);
         Task<bool> IsValidIRD(IRD ird);
     }
 
@@ -16,9 +16,14 @@ namespace PaySmartly.Calculations.Legislation
     {
         private readonly LegislationClient client = client;
 
-        public async Task<Entities.TaxableIncomeTable> GetTaxableIncomeTable(DateTime period)
+        public async Task<Entities.TaxableIncomeTable> GetTaxableIncomeTable(DateTime payPeriodFrom, DateTime payPeriodTo)
         {
-            Request request = new() { PayPeriod = Timestamp.FromDateTime(period) };
+            Request request = new()
+            {
+                PayPeriodFrom = Timestamp.FromDateTime(payPeriodFrom.ToUniversalTime()),
+                PayPeriodTo = Timestamp.FromDateTime(payPeriodTo.ToUniversalTime())
+            };
+            
             Response response = await client.GetTableAsync(request);
 
             Entities.TaxableIncomeTable table = Convert(response.Table);

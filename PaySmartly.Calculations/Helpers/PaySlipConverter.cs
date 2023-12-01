@@ -13,12 +13,14 @@ namespace PaySmartly.Calculations.Helpers
                 record.Employee,
                 record.AnnualSalary,
                 record.SuperRate,
-                record.PayPeriod,
+                record.PayPeriodFrom,
+                record.PayPeriodTo,
                 record.GrossIncome,
                 record.IncomeTax,
                 record.NetIncome,
                 record.Super,
-                record.Requester);
+                record.Requester,
+                record.CreatedAt);
         }
 
         public static PaySlipRecord Convert(Record record)
@@ -27,6 +29,7 @@ namespace PaySmartly.Calculations.Helpers
                 new EmployeeIdentity(record.EmployeeFirstName, record.EmployeeLastName),
                 record.AnnualSalary,
                 record.SuperRate,
+                record.PayPeriodFrom.ToDateTime(),
                 record.PayPeriodTo.ToDateTime(),
                 record.RoundTo,
                 record.Months,
@@ -38,7 +41,8 @@ namespace PaySmartly.Calculations.Helpers
                 record.GrossIncome,
                 record.IncomeTax,
                 record.NetIncome,
-                record.Super
+                record.Super,
+                record.CreatedAt.ToDateTime()
             );
 
             PaySlipRecord paySlipRecord = new(record.Id, paySlip);
@@ -55,8 +59,8 @@ namespace PaySmartly.Calculations.Helpers
                     EmployeeLastName = paySlip.Employee.LastName,
                     AnnualSalary = paySlip.AnnualSalary,
                     SuperRate = paySlip.SuperRate,
-                    PayPeriodFrom = paySlip.PayPeriod.ToTimestamp(),
-                    PayPeriodTo = paySlip.PayPeriod.ToTimestamp(),
+                    PayPeriodFrom = paySlip.PayPeriodFrom.ToUniversalTime().ToTimestamp(),
+                    PayPeriodTo = paySlip.PayPeriodTo.ToUniversalTime().ToTimestamp(),
                     RoundTo = paySlip.RoundTo,
                     Months = paySlip.Months,
                     GrossIncome = paySlip.GrossIncome,
@@ -65,7 +69,7 @@ namespace PaySmartly.Calculations.Helpers
                     Super = paySlip.Super,
                     RequesterFirstName = paySlip.Requester.FirstName,
                     RequesterLastName = paySlip.Requester.LastName,
-                    CreatedAt = Timestamp.FromDateTime(createdAt)
+                    CreatedAt = createdAt.ToUniversalTime().ToTimestamp()
                 }
             };
         }

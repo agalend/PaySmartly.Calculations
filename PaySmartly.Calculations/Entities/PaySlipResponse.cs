@@ -5,10 +5,12 @@ namespace PaySmartly.Calculations.Entities
             EmployeeIdentity Employee,
             double AnnualSalary,
             double SuperRate,
-            DateTime PayPeriod,
+            DateTime PayPeriodFrom,
+            DateTime PayPeriodTo,
             double GrossIncome,
             double IncomeTax,
             double NetIncome,
             double Super,
-            RequesterIdentity Requester);
+            RequesterIdentity Requester,
+            DateTime CreatedAt);
 }

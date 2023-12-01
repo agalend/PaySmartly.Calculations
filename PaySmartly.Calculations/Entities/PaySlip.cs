@@ -7,18 +7,21 @@ namespace PaySmartly.Calculations.Entities
             double grossIncome,
             double incomeTax,
             double netIncome,
-            double super)
+            double super,
+            DateTime createdAt)
                 : base(request)
         {
             GrossIncome = grossIncome;
             IncomeTax = incomeTax;
             NetIncome = netIncome;
             Super = super;
+            CreatedAt = createdAt;
         }
 
         public double GrossIncome { get; }
         public double IncomeTax { get; }
         public double NetIncome { get; }
         public double Super { get; }
+        public DateTime CreatedAt { get; }
     }
 }

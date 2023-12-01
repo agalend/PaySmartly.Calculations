@@ -19,7 +19,7 @@ namespace PaySmartly.Calculations.Legislation
             taxableIncomeTable = new(ranges);
         }
 
-        public Task<TaxableIncomeTable> GetTaxableIncomeTable(DateTime period)
+        public Task<TaxableIncomeTable> GetTaxableIncomeTable(DateTime payPeriodFrom, DateTime payPeriodTo)
         {
             return Task.FromResult(taxableIncomeTable);
         }

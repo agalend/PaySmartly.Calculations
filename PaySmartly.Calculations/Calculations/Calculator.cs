@@ -19,7 +19,7 @@ namespace PaySmartly.Calculations.Calculations
             double netIncome = formulas.CalculateNetIncome(grossIncome, incomeTax, request.RoundTo);
             double super = formulas.CalculateSuper(grossIncome, request.SuperRate, request.RoundTo);
 
-            PaySlip paySlip = new(request, grossIncome, incomeTax, netIncome, super);
+            PaySlip paySlip = new(request, grossIncome, incomeTax, netIncome, super, DateTime.UtcNow);
             return paySlip;
         }
     }

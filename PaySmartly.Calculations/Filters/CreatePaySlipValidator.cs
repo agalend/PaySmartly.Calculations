@@ -28,10 +28,16 @@ namespace PaySmartly.Calculations.Filters
                 return Results.BadRequest($"Invalid {nameof(superRate)} value, you should provide a positive, bigger than 0 super rate");
             }
 
-            DateTime? payPeriod = userRequest?.PayPeriod;
-            if (payPeriod is null)
+            DateTime? payPeriodFrom = userRequest?.PayPeriodFrom;
+            if (payPeriodFrom is null || payPeriodFrom == default)
             {
-                return Results.BadRequest($"Invalid {nameof(payPeriod)} value, you should provide a valid pay period");
+                return Results.BadRequest($"Invalid {nameof(payPeriodFrom)} value, you should provide a valid pay period");
+            }
+
+            DateTime? payPeriodTo = userRequest?.PayPeriodTo;
+            if (payPeriodTo is null || payPeriodTo == default)
+            {
+                return Results.BadRequest($"Invalid {nameof(payPeriodTo)} value, you should provide a valid pay period");
             }
 
             int? roundTo = userRequest?.RoundTo;
