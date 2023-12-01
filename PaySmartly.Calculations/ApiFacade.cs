@@ -16,6 +16,20 @@ namespace PaySmartly.Calculations
     {
         private readonly WebApplication app = app;
 
+        public void Run()
+        {
+            app.Run();
+        }
+
+        public void RegisterHealthMethod()
+        {
+            app.MapGet(HealthEndpoint.Pattern, () =>
+            {
+                return Results.Ok();
+            })
+            .WithName(HealthEndpoint.Name);
+        }
+
         public void RegisterCreatePaySlipMethod()
         {
             app.MapPost(CreateEndpoint.Pattern, async (PaySlipRequest request, IManager manager) =>
@@ -35,11 +49,6 @@ namespace PaySmartly.Calculations
             .WithName(CreateEndpoint.Name)
             .WithOpenApi()
             .AddEndpointFilter<CreatePaySlipValidator>();
-        }
-
-        public void Run()
-        {
-            app.Run();
         }
     }
 }
