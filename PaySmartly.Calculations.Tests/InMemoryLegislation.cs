@@ -1,7 +1,8 @@
 using System.Collections.ObjectModel;
 using PaySmartly.Calculations.Entities;
+using PaySmartly.Calculations.Legislation;
 
-namespace PaySmartly.Calculations.Legislation
+namespace PaySmartly.Calculations.Tests
 {
     public class InMemoryLegislationService : ILegislation
     {

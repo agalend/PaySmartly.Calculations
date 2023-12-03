@@ -1,7 +1,8 @@
 using System.Collections.Concurrent;
 using PaySmartly.Calculations.Entities;
+using PaySmartly.Calculations.Persistance;
 
-namespace PaySmartly.Calculations.Persistance
+namespace PaySmartly.Calculations.Tests
 {
     public class InMemoryPersistance : IPersistance
     {

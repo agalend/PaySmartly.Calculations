@@ -16,8 +16,8 @@ namespace PaySmartly.Calculations.Calculations
         {
             double grossIncome = formulas.CalculateGrossIncome(request.AnnualSalary, request.Months, request.RoundTo);
             double incomeTax = formulas.CalculateIncomeTax(request.AnnualSalary, taxableIncomeTable, request.Months, request.RoundTo);
-            double netIncome = formulas.CalculateNetIncome(grossIncome, incomeTax, request.RoundTo);
             double super = formulas.CalculateSuper(grossIncome, request.SuperRate, request.RoundTo);
+            double netIncome = formulas.CalculateNetIncome(grossIncome, incomeTax, super, request.RoundTo);
 
             PaySlip paySlip = new(request, grossIncome, incomeTax, netIncome, super, DateTime.UtcNow);
             return paySlip;

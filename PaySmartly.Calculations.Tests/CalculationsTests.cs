@@ -18,13 +18,21 @@ public class CalculationsTests
         paySlipManager = new Manager(persistance, legislation, calculator);
     }
 
-    // TODO: create more tests
+    // normal tests
     [Theory]
-    [InlineData(60_050, 9, 500_4.17d, 919.58d, 4084.59d, 450.38d)]
-    [InlineData(120_000, 10, 10_000d, 2543.33d, 7456.67d, 1000d)]
-    [InlineData(120_000, 0, 10_000d, 2543.33d, 7456.67d, 0d)]
+    [InlineData(60_050, 9, 5_004.17d, 919.58d, 4_084.59d, 450.38d)]
+    [InlineData(120_000, 10, 10_000d, 2_543.33d, 7_456.67d, 1_000d)]
+    [InlineData(50_000, 4, 4_166.67d, 668.33d, 3_498.34d, 166.67d)]
+    [InlineData(251_005, 3, 20_917.08, 6501d, 14_416.08d, 627.51d)]
+    [InlineData(1_000_000, 3, 83_333.33d, 30_843.33d, 52_490d, 2500d)]
+    // TODO: create more tests
+
+    // test edge cases
     [InlineData(0, 0, 0d, 0d, 0d, 0d)]
-    public async Task TestPaySipCalculations(
+    [InlineData(120_000, 0, 10_000d, 2_543.33d, 7_456.67d, 0d)]
+    [InlineData(1, 0, 0.08d, 0d, 0.08d, 0d)]
+    // TODO: create more tests
+    public async Task TestRegularPaySipCalculations(
         double annualSalary,
         double superRate,
         double expectedGrossIncome,
@@ -40,8 +48,6 @@ public class CalculationsTests
         Assert.Equal(paySlipRecord?.NetIncome, expectedNetIncome);
         Assert.Equal(paySlipRecord?.Super, expectedSuper);
     }
-
-    // TODO: test incorrect input
 
     private PaySlipRequest CreatePaySlipRequest(double annualSalary, double superRate)
     {

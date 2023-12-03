@@ -6,7 +6,7 @@ namespace PaySmartly.Calculations.Calculations
     {
         double CalculateGrossIncome(double annualSalary, double months, int roundTo);
         double CalculateIncomeTax(double annualSalary, TaxableIncomeTable table, double months, int roundTo);
-        double CalculateNetIncome(double grossIncome, double incomeTax, int roundTo);
+        double CalculateNetIncome(double grossIncome, double incomeTax, double super, int roundTo);
         double CalculateSuper(double grossIncome, double superRate, int roundTo);
     }
 
@@ -44,9 +44,9 @@ namespace PaySmartly.Calculations.Calculations
             return Math.Round(incomeTax, roundTo);
         }
 
-        public double CalculateNetIncome(double grossIncome, double incomeTax, int roundTo)
+        public double CalculateNetIncome(double grossIncome, double incomeTax, double super, int roundTo)
         {
-            double netIncome = grossIncome - incomeTax;
+            double netIncome = grossIncome - incomeTax /*- super */; // TODO: online calculators subtract super ???
 
             return Math.Round(netIncome, roundTo);
         }
