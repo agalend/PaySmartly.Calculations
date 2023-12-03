@@ -3,6 +3,7 @@ using PaySmartly.Calculations.Filters;
 
 using static PaySmartly.Calculations.Helpers.PaySlipConverter;
 using static PaySmartly.Calculations.Endpoints.PaySlipEndpoints;
+using System.Net;
 
 namespace PaySmartly.Calculations
 {
@@ -27,7 +28,8 @@ namespace PaySmartly.Calculations
             {
                 return Results.Ok();
             })
-            .WithName(HealthEndpoint.Name);
+            .WithName(HealthEndpoint.Name)
+            .WithOpenApi();
         }
 
         public void RegisterCreatePaySlipMethod()
@@ -48,6 +50,7 @@ namespace PaySmartly.Calculations
             })
             .WithName(CreateEndpoint.Name)
             .WithOpenApi()
+            .Produces<PaySlipResponse>((int)HttpStatusCode.OK)
             .AddEndpointFilter<CreatePaySlipValidator>();
         }
     }

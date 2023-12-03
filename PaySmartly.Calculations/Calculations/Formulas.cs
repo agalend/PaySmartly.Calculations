@@ -46,7 +46,7 @@ namespace PaySmartly.Calculations.Calculations
 
         public double CalculateNetIncome(double grossIncome, double incomeTax, double super, int roundTo)
         {
-            double netIncome = grossIncome - incomeTax /*- super */; // TODO: online calculators subtract super ???
+            double netIncome = grossIncome - incomeTax /* - super */; // TODO: online calculators subtract super, why ???
 
             return Math.Round(netIncome, roundTo);
         }
