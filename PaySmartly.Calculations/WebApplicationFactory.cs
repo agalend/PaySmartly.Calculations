@@ -14,7 +14,6 @@ namespace PaySmartly.Calculations
 {
     public static class WebApplicationFactory
     {
-        // TODO: set service name somewhere!!!
         private static readonly string ServiceName = "Calculations Service";
 
         public static WebApplication CreateWebApplication(string[] args)
