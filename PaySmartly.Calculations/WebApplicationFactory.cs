@@ -4,6 +4,7 @@ using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using PaySmartly.Calculations.Calculations;
+using PaySmartly.Calculations.Env;
 using PaySmartly.Calculations.Exceptions;
 using PaySmartly.Calculations.Legislation;
 using PaySmartly.Calculations.Persistance;
@@ -26,6 +27,7 @@ namespace PaySmartly.Calculations
             WebApplication app = builder.Build();
             AddExceptionHandling(app);
             AddSwagger(app);
+
             return app;
         }
 
@@ -36,18 +38,15 @@ namespace PaySmartly.Calculations
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            builder.Services.AddGrpcClient<PersistanceClient>(options =>
-            {
-                // TODO: get from config
-                options.Address = new Uri("http://localhost:9087");
-            });
+            IConfigurationSection grpcClientsSection = builder.Configuration.GetSection("GrpcClients");
+            var grpcClients = grpcClientsSection.Get<GrpcClients>();
 
-            builder.Services.AddGrpcClient<LegislationClient>(options =>
-            {
-                // TODO: get from config
-                options.Address = new Uri("http://localhost:9090");
-            });
+            IEnvProvider envProvider = new EnvProvider(grpcClients);
+            string? persistanceUrl = envProvider?.GetPersistanceClientUrl();
+            string? legislationUrl = envProvider?.GetLegislationClientUrl();
 
+            builder.Services.AddGrpcClient<PersistanceClient>(opts => opts.Address = new Uri(persistanceUrl!));
+            builder.Services.AddGrpcClient<LegislationClient>(opts => opts.Address = new Uri(legislationUrl!));
 
             builder.Services.AddScoped<IPersistance, Persistance.Persistance>();
             builder.Services.AddScoped<ILegislation, Legislation.Legislation>();
@@ -76,6 +75,7 @@ namespace PaySmartly.Calculations
             {
                 tracing.AddAspNetCoreInstrumentation().AddConsoleExporter();
             });
+
             openTelemetryBuilder = openTelemetryBuilder.WithMetrics(metrics =>
             {
                 metrics.AddAspNetCoreInstrumentation().AddConsoleExporter();
