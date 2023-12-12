@@ -2,8 +2,8 @@ namespace PaySmartly.Calculations.Env
 {
     public interface IEnvProvider
     {
-        string? GetPersistenceClientUrl();
-        string? GetLegislationClientUrl();
+        string? GetPersistenceUrl();
+        string? GetLegislationUrl();
     }
 
     public class EnvProvider(GrpcClients? grpcClients) : IEnvProvider
@@ -14,7 +14,7 @@ namespace PaySmartly.Calculations.Env
         private readonly string? defaultPersistanceUrl = grpcClients?.Persistence?.Url;
         private readonly string? defaultLegislationUrl = grpcClients?.Legislation?.Url;
 
-        public string? GetLegislationClientUrl()
+        public string? GetLegislationUrl()
         {
             string? url = Environment.GetEnvironmentVariable(LEGISLATION_URL);
             url ??= defaultLegislationUrl;
@@ -22,7 +22,7 @@ namespace PaySmartly.Calculations.Env
             return url;
         }
 
-        public string? GetPersistenceClientUrl()
+        public string? GetPersistenceUrl()
         {
             string? url = Environment.GetEnvironmentVariable(PERSISTENCE_URL);
             url ??= defaultPersistanceUrl;
