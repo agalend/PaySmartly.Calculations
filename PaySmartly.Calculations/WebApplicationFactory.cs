@@ -42,7 +42,7 @@ namespace PaySmartly.Calculations
             var grpcClients = grpcClientsSection.Get<GrpcClients>();
 
             IEnvProvider envProvider = new EnvProvider(grpcClients);
-            string? persistanceUrl = envProvider?.GetPersistanceClientUrl();
+            string? persistanceUrl = envProvider?.GetPersistenceClientUrl();
             string? legislationUrl = envProvider?.GetLegislationClientUrl();
 
             builder.Services.AddGrpcClient<PersistanceClient>(opts => opts.Address = new Uri(persistanceUrl!));
